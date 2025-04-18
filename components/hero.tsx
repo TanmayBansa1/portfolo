@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Github, Linkedin, Twitter } from "lucide-react"
+import { ArrowRight, DownloadCloudIcon, Github, Linkedin, Twitter } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { TypeAnimation } from "react-type-animation"
@@ -343,6 +343,11 @@ export default function Hero() {
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-full">
                 <Link href="#contact">Contact Me</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="rounded-full">
+                <Link href="https://drive.google.com/file/d/1a2Iq7j-0wrsP8yqj0wQS3zTneHxFJACK/view" target="_blank">
+                    <DownloadCloudIcon className="h-4 w-4" /> Resume
+                </Link>
               </Button>
             </motion.div>
 
