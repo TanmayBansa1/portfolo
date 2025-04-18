@@ -34,12 +34,12 @@ export default function Projects() {
   const originalProjects: Project[] = [
     {
       id: 1,
-      title: "RepiSage",
+      title: "ReplSage",
       description:
         "An innovative web application designed to streamline project collaboration, knowledge management, and AI-assisted development.",
       technologies: ["TypeScript", "React", "Node.js", "AI"],
       github: "https://github.com/TanmayBansa1/RepiSage",
-      image: "/placeholder.svg?height=300&width=500",
+      image: "/replsage.png",
     },
     {
       id: 2,
@@ -48,7 +48,7 @@ export default function Projects() {
         "A robust and intuitive storage application designed to streamline organization and management of files with a seamless experience.",
       technologies: ["TypeScript", "React", "Cloud Storage"],
       github: "https://github.com/TanmayBansa1/Miseit",
-      image: "/placeholder.svg?height=300&width=500",
+      image: "/miseit.png",
     },
     {
       id: 3,
@@ -57,7 +57,7 @@ export default function Projects() {
         "A modern digital wallet application featuring real-time transactions, authentication, and a clean UI.",
       technologies: ["TypeScript", "React", "Node.js", "Payment API"],
       github: "https://github.com/TanmayBansa1/Payme-App-v2",
-      image: "/placeholder.svg?height=300&width=500",
+      image: "/payme.png",
     },
     {
       id: 4,
@@ -65,7 +65,7 @@ export default function Projects() {
       description: "A blogging platform for people around the world to share their thoughts and stories.",
       technologies: ["TypeScript", "React", "CMS"],
       github: "https://github.com/TanmayBansa1/Quillcraft",
-      image: "/placeholder.svg?height=300&width=500",
+      image: "/quillcraft.png",
     },
     {
       id: 5,
@@ -74,15 +74,7 @@ export default function Projects() {
         "A website designed for an online music academy to provide an exceptional learning experience for music enthusiasts.",
       technologies: ["TypeScript", "React", "Audio API"],
       github: "https://github.com/TanmayBansa1/Muzix",
-      image: "/placeholder.svg?height=300&width=500",
-    },
-    {
-      id: 6,
-      title: "Learn Fullstack Web Development",
-      description: "A repository where I upload about my personal progress in learning full-stack web development.",
-      technologies: ["JavaScript", "HTML", "CSS", "Node.js"],
-      github: "https://github.com/TanmayBansa1/learn-fullstack-webd",
-      image: "/placeholder.svg?height=300&width=500",
+      image: "/muzix.png",
     },
   ]
 
@@ -107,7 +99,7 @@ export default function Projects() {
           return newProjects
         })
       }
-    }, 3000) // Adjust timing as needed
+    }, 1500) // Adjust timing as needed
 
     return () => clearInterval(interval)
   }, [isPaused, inView])
