@@ -288,7 +288,7 @@ export default function Hero() {
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
                 <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                  Full-Stack Developer
+                  Software Engineer
                 </span>
               </motion.div>
               <motion.h1
@@ -403,7 +403,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <Link href="#projects" className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <Link href="#projects" className="absolute bottom-24 left-1/2 transform -translate-x-1/2 animate-bounce">
         <div className="w-6 h-10 rounded-full border-2 border-muted-foreground flex justify-center items-start p-1">
           <div className="w-1 h-2 bg-muted-foreground rounded-full animate-pulse" />
         </div>
