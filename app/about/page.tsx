@@ -16,34 +16,34 @@ export default function AboutPage() {
 
   const experiences = [
     {
-      title: "Senior Frontend Developer",
-      company: "Tech Innovations Inc.",
-      period: "2022 - Present",
+      title: "Open Source Contributor",
+      company: "Sugar Labs",
+      period: "2025 - Present",
       description:
-        "Leading the frontend development team, implementing modern UI/UX designs, and optimizing application performance.",
-      skills: ["React", "TypeScript", "Next.js"],
+        "Contributing to the sugar labs organisation codebase, helping to improve and maintain existing projects, and learning new skills.",
+      skills: ["React", "TypeScript", "Tailwindcss"],
     },
     {
-      title: "Full Stack Developer",
-      company: "Digital Solutions Ltd.",
-      period: "2020 - 2022",
+      title: "Tech Intern",
+      company: "Ox pro Media",
+      period: "May 2024 - June 2024",
       description:
-        "Developed and maintained full-stack applications, collaborated with cross-functional teams, and implemented new features.",
-      skills: ["JavaScript", "Node.js", "MongoDB"],
-    },
-    {
-      title: "Junior Web Developer",
-      company: "WebCraft Studios",
-      period: "2018 - 2020",
-      description: "Built responsive websites, fixed bugs, and assisted in the development of web applications.",
-      skills: ["HTML/CSS", "JavaScript", "PHP"],
+        "Developed and maintained full-stack applications, and implemented new features. WOrked extensively on a inhouse storage solution for the employees",
+      skills: ["Appwrite", "Next.js", "PostgreSQL", "Prisma", "Stripe"],
     },
     {
       title: "Freelance Developer",
       company: "Self-employed",
-      period: "2017 - 2018",
-      description: "Worked on various client projects, developing websites and small web applications.",
-      skills: ["WordPress", "JavaScript", "CSS"],
+      period: "2025 - Present",
+      description: "Worked on various client projects, developing websites and full stack web applications.",
+      skills: ["Next.js", "TypeScript", "ShadCN", "Docker", "AWS", "Figma", "Git", "CI/CD"],
+    },
+    {
+      title: "Tech Volunteer and Event Management Intern",
+      company: "Let's Go India Foundation",
+      period: "2023 - 2024",
+      description: "Assisted in the development of web applications, and managed events and campaigns.",
+      skills: ["Reactjs", "JavaScript", "HTML/CSS"],
     },
   ]
 
