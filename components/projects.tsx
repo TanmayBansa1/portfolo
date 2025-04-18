@@ -32,11 +32,21 @@ export default function Projects() {
   // Define the original projects
   const originalProjects: Project[] = [
     {
+      id: 0,
+      title: "GenInvoice",
+      description: "A web application designed to streamline invoice generation and management.",
+      technologies: ["NextJS", "TypeScript", "Mailtrap", "Prisma", "Clerk", "Upstash", "NeonDB", "ShadCN"],
+      github: "https://github.com/TanmayBansa1/GenInvoice",
+      image: "/geninvoice.png",
+      demo: "https://geninvoice.tanmay.space"
+    },
+
+    {
       id: 1,
       title: "ReplSage",
       description:
         "An innovative web application designed to streamline project collaboration, knowledge management, and AI-assisted development.",
-      technologies: ["TypeScript", "React", "Node.js", "AI"],
+      technologies: ["TypeScript", "NextJS", "LangChain", "Gemini","NeonDB", "Clerk", "Stripe", "AssemblyAI", "RAG", "Firebase", "ShadCN"],
       github: "https://github.com/TanmayBansa1/RepiSage",
       image: "/replsage.png",
       demo: "https://repl-sage.vercel.app/"
@@ -46,7 +56,7 @@ export default function Projects() {
       title: "Miseit",
       description:
         "A robust and intuitive storage application designed to streamline organization and management of files with a seamless experience.",
-      technologies: ["TypeScript", "React", "Cloud Storage"],
+      technologies: ["TypeScript", "NextJS", "Cloud Storage", "Appwrite","ShadCN"],
       github: "https://github.com/TanmayBansa1/Miseit",
       image: "/miseit.png",
       demo: "https://mise-it.vercel.app/"
@@ -56,7 +66,7 @@ export default function Projects() {
       title: "Payme-App-v2",
       description:
         "A modern digital wallet application featuring real-time transactions, authentication, and a clean UI.",
-      technologies: ["TypeScript", "React", "Node.js", "Payment API"],
+      technologies: ["TypeScript", "React", "Node.js", "TurboRepo", "Webhooks", "NextAuth", "Prisma", "NeonDB", "ShadCN"],
       github: "https://github.com/TanmayBansa1/Payme-App-v2",
       image: "/payme.png",
       demo: "https://payme-app-v2.vercel.app/"
@@ -65,7 +75,7 @@ export default function Projects() {
       id: 4,
       title: "Quillcraft",
       description: "A blogging platform for people around the world to share their thoughts and stories.",
-      technologies: ["TypeScript", "React", "CMS"],
+      technologies: ["TypeScript", "React", "Honojs", "Cloudflare Workers", "Prisma", "AivenDB"],
       github: "https://github.com/TanmayBansa1/Quillcraft",
       image: "/quillcraft.png",
       demo: "https://quilllcraft-frontend.vercel.app/"
@@ -75,7 +85,7 @@ export default function Projects() {
       title: "Muzix",
       description:
         "A website designed for an online music academy to provide an exceptional learning experience for music enthusiasts.",
-      technologies: ["TypeScript", "React", "Audio API"],
+      technologies: ["TypeScript", "NextJS", "Acertinity UI"],
       github: "https://github.com/TanmayBansa1/Muzix",
       image: "/muzix.png",
       demo: "https://music-academy-amber-three.vercel.app/"
