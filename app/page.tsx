@@ -19,9 +19,15 @@ export default function Home() {
           </Button>
         </Link>
       </div>
-      <Projects />
-      <Skills />
-      <Contact />
+      <section>
+        <Projects />
+      </section>
+      <section>
+        <Skills />
+      </section>
+      <section>
+        <Contact />
+      </section>
       <Footer />
     </main>
   )

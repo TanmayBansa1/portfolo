@@ -270,8 +270,8 @@ export default function Hero() {
   }, [mounted])
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full hero-mask" />
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0 hero-mask" />
       <div className="container mx-auto px-4 z-10 py-20 md:py-32">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <motion.div
@@ -384,7 +384,7 @@ export default function Hero() {
                 <div className="relative w-64 h-64 animate-float">
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 blur-md opacity-70" />
                   <div className="absolute inset-2 rounded-full bg-background flex items-center justify-center overflow-hidden">
-                    <canvas ref={globeCanvasRef} className="w-full h-full" />
+                    <canvas ref={globeCanvasRef} className="w-full h-full pointer-events-none z-0" />
                   </div>
                 </div>
               </div>
