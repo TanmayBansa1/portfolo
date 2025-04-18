@@ -33,10 +33,11 @@ export default function Navbar() {
     { title: "Projects", href: "/#projects", icon: <Briefcase /> },
     { title: "Skills", href: "/#skills", icon: <Code /> },
     { title: "Contact", href: "/#contact", icon: <Mail /> },
+    { title: "Toggle Theme", icon: <ModeToggle /> }
   ]
 
   return (
-    <div className="flex fixed pt-24 justify-center w-full z-50">
+    <div className="flex fixed bottom-5 justify-center w-full z-50">
       <FloatingDock
         mobileClassName="translate-y-20" // only for demo, remove for production
         items={navLinks}

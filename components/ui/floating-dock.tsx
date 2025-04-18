@@ -15,14 +15,14 @@ import {
   useTransform,
 } from "motion/react";
 
-import { useRef, useState } from "react";
+import { ReactElement, useRef, useState } from "react";
 
 export const FloatingDock = ({
   items,
   desktopClassName,
   mobileClassName,
 }: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
+  items: { title: string; icon: React.ReactNode; href?: string }[];
   desktopClassName?: string;
   mobileClassName?: string;
 }) => {
@@ -38,7 +38,7 @@ const FloatingDockMobile = ({
   items,
   className,
 }: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
+  items: { title: string; icon: React.ReactNode; href?: string }[];
   className?: string;
 }) => {
   const [open, setOpen] = useState(false);
@@ -93,7 +93,7 @@ const FloatingDockDesktop = ({
   items,
   className,
 }: {
-  items: { title: string; icon: React.ReactNode; href: string }[];
+  items: { title: string; icon: React.ReactNode; href?: string }[];
   className?: string;
 }) => {
   let mouseX = useMotionValue(Infinity);
@@ -122,7 +122,7 @@ function IconContainer({
   mouseX: MotionValue;
   title: string;
   icon: React.ReactNode;
-  href: string;
+  href?: string;
 }) {
   let ref = useRef<HTMLDivElement>(null);
 
