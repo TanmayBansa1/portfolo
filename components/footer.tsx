@@ -35,7 +35,8 @@ export default function Footer() {
                 <span className="sr-only">LinkedIn</span>
               </Link>
               <Link
-                href="mailto:tanmay.bansal@example.com"
+                href="https://mail.google.com/mail/?view=cm&to=tanmaybansal.20@gmail.com"
+                target="_blank"
                 className="text-muted-foreground hover:text-primary transition-colors"
               >
                 <Mail className="h-5 w-5" />
