@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card"
 type Skill = {
   name: string
   icon: string
-  category: "frontend" | "backend" | "tools" | "other"
+  category: "frontend" | "backend" | "tools" | "AI/ML" 
 }
 
 export default function Skills() {
@@ -18,37 +18,54 @@ export default function Skills() {
 
   const skills: Skill[] = [
     // Frontend
-    { name: "HTML/CSS", icon: "🌐", category: "frontend" },
-    { name: "JavaScript", icon: "📜", category: "frontend" },
-    { name: "TypeScript", icon: "🔷", category: "frontend" },
-    { name: "React", icon: "⚛️", category: "frontend" },
-    { name: "Next.js", icon: "▲", category: "frontend" },
-    { name: "Tailwind CSS", icon: "🎨", category: "frontend" },
-
+    { name: "NextJs", icon: "▲", category: "frontend" },
+    { name: "React.js", icon: "⚛️", category: "frontend" },
+    { name: "Tailwind CSS", icon: "💠", category: "frontend" },
+    { name: "Shadcn", icon: "", category: "frontend" },
+    { name: "HTML", icon: "🌐", category: "frontend" },
+    { name: "CSS", icon: "🎨", category: "frontend" },
+    
     // Backend
     { name: "Node.js", icon: "🟢", category: "backend" },
-    { name: "Express", icon: "🚂", category: "backend" },
-    { name: "MongoDB", icon: "🍃", category: "backend" },
+    { name: "Appwrite", icon: "📝", category: "backend" },
+    { name: "Prisma", icon: "🌱", category: "backend" },
+    { name: "Mongoose", icon: "🍄", category: "backend" },
+    { name: "PostgreSQL", icon: "🐘", category: "backend" },
     { name: "SQL", icon: "📊", category: "backend" },
-    { name: "REST API", icon: "🔌", category: "backend" },
-
+    { name: "MongoDB", icon: "🍃", category: "backend" },
+    { name: "Hono", icon: "🔥", category: "backend" },
+    { name: "Firebase", icon: "🔥", category: "backend" },
+    { name: "Cloudflare Workers", icon: "☁️", category: "backend" },
+    { name: "Websockets", icon: "🔌", category: "backend" },
+    { name: "Stripe", icon: "💳", category: "backend" },
+    { name: "JsonWebTokens", icon: "🛡️", category: "backend" },
+    { name: "ZOD", icon: "🧪", category: "backend" },
+    
+    // Data Science / ML
+    { name: "Python", icon: "🐍", category: "AI/ML" },
+    { name: "TensorFlow", icon: "🔶", category: "AI/ML" },
+    { name: "Scikit Learn", icon: "📚", category: "AI/ML" },
+    { name: "OpenCV", icon: "👁️", category: "AI/ML" },
+    { name: "RAG", icon: "📖", category: "AI/ML" },
+    
     // Tools
     { name: "Git", icon: "🔄", category: "tools" },
-    { name: "GitHub", icon: "🐙", category: "tools" },
-    { name: "VS Code", icon: "📝", category: "tools" },
+    { name: "Github", icon: "🐙", category: "tools" },
+    { name: "LangChain", icon: "🔗", category: "tools" },
+    { name: "Postman", icon: "📬", category: "tools" },
+    { name: "Hoppscotch", icon: "🚀", category: "tools" },
+    { name: "MongoDB Compass", icon: "🧭", category: "tools" },
     { name: "Figma", icon: "🎭", category: "tools" },
+    { name: "Docker", icon: "🐳", category: "tools" },
+    { name: "C++/C", icon: "💻", category: "tools" },
 
-    // Other
-    { name: "Problem Solving", icon: "🧩", category: "other" },
-    { name: "Team Collaboration", icon: "👥", category: "other" },
-    { name: "Agile/Scrum", icon: "🔄", category: "other" },
   ]
 
   const categories = [
     { id: "frontend", name: "Frontend" },
     { id: "backend", name: "Backend" },
+    { id: "AI/ML", name: "AI/ML" },
     { id: "tools", name: "Tools" },
-    { id: "other", name: "Other" },
   ]
 
   return (
