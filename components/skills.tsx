@@ -52,7 +52,7 @@ export default function Skills() {
   ]
 
   return (
-    <section id="skills" className="py-20 md:py-32 bg-muted/50" ref={ref}>
+    <section id="skills" className="py-20 md:py-32 bg-white [background:radial-gradient(125%_125%_at_50%_10%,#fff_40%,#63e_100%)] dark:[background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]" ref={ref}>
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

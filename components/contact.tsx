@@ -74,14 +74,17 @@ export default function Contact() {
   ]
 
   return (
-    <section id="contact" className="py-20 md:py-32" ref={ref}>
-      <div className="container mx-auto px-4">
+      <div className="relative h-full w-full  bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]  dark:bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] dark:bg-[size:14px_24px]">
+    <section id="contact" className="py-20 md:py-32 bg-[radial-gradient(circle_800px_at_100%_200px,#d5c5ff,transparent)]  dark:bg-[radial-gradient(circle_400px_at_50%_300px,#fbfbfb36,#000)]" ref={ref}>
+
+
+      <div className="container mx-auto px-4  ">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
           className="max-w-3xl mx-auto text-center mb-16"
-        >
+          >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
           <div className="h-1 w-20 bg-primary mx-auto mb-8 rounded-full" />
           <p className="text-muted-foreground">
@@ -95,7 +98,7 @@ export default function Contact() {
             animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
             transition={{ duration: 0.5, delay: 0.2 }}
             className="lg:col-span-1 space-y-6"
-          >
+            >
             {contactInfo.map((info, index) => (
               <Card key={index} className="overflow-hidden">
                 <CardContent className="p-6 flex items-start space-x-4">
@@ -120,7 +123,7 @@ export default function Contact() {
             animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
             transition={{ duration: 0.5, delay: 0.4 }}
             className="lg:col-span-2"
-          >
+            >
             <Card>
               <CardContent className="p-6">
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -129,7 +132,7 @@ export default function Contact() {
                       <label
                         htmlFor="name"
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
+                        >
                         Name
                       </label>
                       <Input
@@ -139,13 +142,13 @@ export default function Contact() {
                         onChange={handleChange}
                         placeholder="Your name"
                         required
-                      />
+                        />
                     </div>
                     <div className="space-y-2">
                       <label
                         htmlFor="email"
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
+                        >
                         Email
                       </label>
                       <Input
@@ -156,14 +159,14 @@ export default function Contact() {
                         onChange={handleChange}
                         placeholder="Your email"
                         required
-                      />
+                        />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <label
                       htmlFor="subject"
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
+                      >
                       Subject
                     </label>
                     <Input
@@ -173,13 +176,13 @@ export default function Contact() {
                       onChange={handleChange}
                       placeholder="Subject"
                       required
-                    />
+                      />
                   </div>
                   <div className="space-y-2">
                     <label
                       htmlFor="message"
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
+                      >
                       Message
                     </label>
                     <Textarea
@@ -190,7 +193,7 @@ export default function Contact() {
                       placeholder="Your message"
                       rows={5}
                       required
-                    />
+                      />
                   </div>
                   <Button type="submit" className="w-full" disabled={isSubmitting}>
                     {isSubmitting ? (
@@ -208,12 +211,12 @@ export default function Contact() {
                             r="10"
                             stroke="currentColor"
                             strokeWidth="4"
-                          ></circle>
+                            ></circle>
                           <path
                             className="opacity-75"
                             fill="currentColor"
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
+                            ></path>
                         </svg>
                         Sending...
                       </span>
@@ -230,5 +233,6 @@ export default function Contact() {
         </div>
       </div>
     </section>
+                    </div>
   )
 }

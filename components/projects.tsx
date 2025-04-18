@@ -1,6 +1,6 @@
 "use client"
 import { useRef, useState, useEffect } from "react"
-import { motion, useAnimation } from "framer-motion"
+import { motion, useAnimation, useMotionValue } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -18,6 +18,7 @@ type Project = {
   image: string
 }
 
+
 export default function Projects() {
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -26,9 +27,7 @@ export default function Projects() {
 
   const [isPaused, setIsPaused] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
-  const [projects, setProjects] = useState<Project[]>([])
-  const [visibleProjects, setVisibleProjects] = useState<Project[]>([])
-  const controls = useAnimation()
+  const [containerWidth, setContainerWidth] = useState(0)
 
   // Define the original projects
   const originalProjects: Project[] = [
@@ -40,6 +39,7 @@ export default function Projects() {
       technologies: ["TypeScript", "React", "Node.js", "AI"],
       github: "https://github.com/TanmayBansa1/RepiSage",
       image: "/replsage.png",
+      demo: "https://repl-sage.vercel.app/"
     },
     {
       id: 2,
@@ -49,6 +49,7 @@ export default function Projects() {
       technologies: ["TypeScript", "React", "Cloud Storage"],
       github: "https://github.com/TanmayBansa1/Miseit",
       image: "/miseit.png",
+      demo: "https://mise-it.vercel.app/"
     },
     {
       id: 3,
@@ -58,6 +59,7 @@ export default function Projects() {
       technologies: ["TypeScript", "React", "Node.js", "Payment API"],
       github: "https://github.com/TanmayBansa1/Payme-App-v2",
       image: "/payme.png",
+      demo: "https://payme-app-v2.vercel.app/"
     },
     {
       id: 4,
@@ -66,6 +68,7 @@ export default function Projects() {
       technologies: ["TypeScript", "React", "CMS"],
       github: "https://github.com/TanmayBansa1/Quillcraft",
       image: "/quillcraft.png",
+      demo: "https://quilllcraft-frontend.vercel.app/"
     },
     {
       id: 5,
@@ -75,44 +78,71 @@ export default function Projects() {
       technologies: ["TypeScript", "React", "Audio API"],
       github: "https://github.com/TanmayBansa1/Muzix",
       image: "/muzix.png",
+      demo: "https://music-academy-amber-three.vercel.app/"
     },
   ]
 
-  // Initialize projects with duplicates for infinite scrolling
-  useEffect(() => {
-    // Create a duplicate set of projects with new IDs for the infinite scroll effect
-    const duplicatedProjects = [...originalProjects, ...originalProjects.map((p) => ({ ...p, id: p.id + 100 }))]
-    setProjects(duplicatedProjects)
-    setVisibleProjects(duplicatedProjects)
-  }, [])
+  // Duplicate projects for seamless looping
+  const projects = [...originalProjects, ...originalProjects]
 
-  // Animation for the carousel
-  useEffect(() => {
-    if (isPaused || !inView) return
+  // Calculate card width (including margin)
+  const CARD_WIDTH = 350 + 24 // 350px + mx-3 (12px each side)
+  const TOTAL_WIDTH = CARD_WIDTH * originalProjects.length
 
-    const interval = setInterval(() => {
-      if (containerRef.current && !isPaused) {
-        // Move projects to create infinite scroll effect
-        setVisibleProjects((prev) => {
-          const firstProject = prev[0]
-          const newProjects = [...prev.slice(1), firstProject]
-          return newProjects
+  // Animation controls
+  const controls = useAnimation()
+  const [x, setX] = useState(0)
+
+  // Start the animation
+  useEffect(() => {
+    if (!inView) return
+    let frame: number
+    let lastTime = performance.now()
+    const animate = (now: number) => {
+      if (!isPaused) {
+        const elapsed = now - lastTime
+        lastTime = now
+        setX((prev) => {
+          let next = prev - (elapsed * 0.08) // speed: adjust 0.08 for faster/slower
+          if (Math.abs(next) >= TOTAL_WIDTH) {
+            next = 0
+          }
+          return next
         })
+      } else {
+        lastTime = now
       }
-    }, 1500) // Adjust timing as needed
+      frame = requestAnimationFrame(animate)
+    }
+    frame = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(frame)
+  }, [isPaused, inView, TOTAL_WIDTH])
 
-    return () => clearInterval(interval)
-  }, [isPaused, inView])
+  // Fade in/out based on card position
+  function getOpacity(cardIndex: number) {
+    const leftEdge = -x + cardIndex * CARD_WIDTH
+    const fadeWidth = 100 // px, adjust for wider fade
+    if (leftEdge < fadeWidth) {
+      return leftEdge / fadeWidth
+    } else if (leftEdge > TOTAL_WIDTH - fadeWidth) {
+      return (TOTAL_WIDTH - leftEdge) / fadeWidth
+    }
+    return 1
+  }
 
   return (
-    <section id="projects" className="py-20 md:py-32" ref={ref}>
-      <div className="container mx-auto px-4">
+    <section id="projects" className="py-20 md:py-32  bg-[radial-gradient(circle_farthest-side,rgba(177,156,217,.35),rgba(255,255,255,0))]
+    dark:bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]" ref={ref}>
+
+      
+      <div className="container mx-auto px-4 ">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
           className="max-w-3xl mx-auto text-center mb-16"
         >
+
           <h2 className="text-3xl md:text-4xl font-bold mb-4">My Projects</h2>
           <div className="h-1 w-20 bg-primary mx-auto mb-8 rounded-full" />
           <p className="text-muted-foreground">
@@ -128,13 +158,17 @@ export default function Projects() {
         >
           <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10"></div>
           <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent z-10"></div>
-
           <div ref={containerRef} className="flex overflow-hidden py-8">
-            <div className="flex transition-transform duration-1000 ease-linear">
-              {visibleProjects.map((project, index) => (
+            <motion.div
+              className="flex"
+              style={{ x }}
+              animate={controls}
+            >
+              {projects.map((project, index) => (
                 <motion.div
                   key={`${project.id}-${index}`}
                   className="flex-shrink-0 w-[300px] md:w-[350px] mx-3"
+                  style={{ opacity: getOpacity(index) }}
                   initial={{ opacity: 0, x: 100 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: -100 }}
@@ -186,7 +220,7 @@ export default function Projects() {
                   </Card>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
