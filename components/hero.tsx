@@ -2,10 +2,11 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Github, Linkedin } from "lucide-react"
+import { ArrowRight, Github, Linkedin, Twitter } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { TypeAnimation } from "react-type-animation"
+import { IconBrandTwitter } from "@tabler/icons-react"
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -368,6 +369,15 @@ export default function Hero() {
               >
                 <Linkedin className="h-6 w-6" />
                 <span className="sr-only">LinkedIn</span>
+              </Link>
+              <Link
+                href="https://x.com/K_A_I11"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
+                <Twitter className="h-6 w-6" />
+                <span className="sr-only">Twitter</span>
               </Link>
             </motion.div>
           </motion.div>

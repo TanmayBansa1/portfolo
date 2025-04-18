@@ -9,7 +9,9 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Tanmay Bansal | Portfolio",
   description: "Full-stack developer portfolio showcasing projects and skills",
-    generator: 'v0.dev'
+  icons: {
+    icon: "/favicon.ico",
+  }
 }
 
 export default function RootLayout({
