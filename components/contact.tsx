@@ -57,8 +57,8 @@ export default function Contact() {
     {
       icon: <Mail className="h-5 w-5" />,
       title: "Email",
-      value: "tanmay.bansal@example.com",
-      link: "mailto:tanmay.bansal@example.com",
+      value: "tanmaybansal.20@gmail.com",
+      link: "https://mail.google.com/mail/?view=cm&to=tanmaybansal.20@gmail.com",
     },
     {
       icon: <MapPin className="h-5 w-5" />,
@@ -68,7 +68,7 @@ export default function Contact() {
     {
       icon: <Phone className="h-5 w-5" />,
       title: "Phone",
-      value: "+91 98765 43210",
+      value: "+91 8742921973",
       link: "tel:+919876543210",
     },
   ]
@@ -106,7 +106,7 @@ export default function Contact() {
                   <div>
                     <h3 className="font-medium">{info.title}</h3>
                     {info.link ? (
-                      <a href={info.link} className="text-muted-foreground hover:text-primary transition-colors">
+                      <a href={info.link} target="_blank"  className="text-muted-foreground hover:text-primary transition-colors">
                         {info.value}
                       </a>
                     ) : (
