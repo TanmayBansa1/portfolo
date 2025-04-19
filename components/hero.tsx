@@ -6,7 +6,6 @@ import { ArrowRight, DownloadCloudIcon, Github, Linkedin, Twitter } from "lucide
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { TypeAnimation } from "react-type-animation"
-import { IconBrandTwitter } from "@tabler/icons-react"
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -306,9 +305,11 @@ export default function Hero() {
                         2000,
                         "a Developer",
                         1000,
-                        "a Designer",
+                        "a Software Engineer",
                         1000,
                         "a Creator",
+                        1000,
+                        "an AI/ML Enthusiast",
                         1000,
                         "Tanmay Bansal",
                         5000,
