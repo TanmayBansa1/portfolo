@@ -1,5 +1,6 @@
+'use server'
 import { MailtrapClient } from "mailtrap";
-;
+
 
 const client = new MailtrapClient({
   token: process.env.MAILTRAP_TOKEN!,
@@ -14,8 +15,8 @@ const recipients = [
     email: "tanmay.bansal20@gmail.com",
   }
 ];
-const sendMessage = ({sender}: {
-    sender: {
+const sendMessage = async ({message}: {
+    message: {
         email: string, 
         name: string,
         subject: string,
@@ -25,21 +26,27 @@ const sendMessage = ({sender}: {
 
     try{
 
-        client
+        await client
         .send({
             from: sender,
             to: recipients,
             template_uuid: process.env.TEMPLATE_ID!,
             template_variables: {
-                "fromEmail": sender.email,
-                "name": sender.name,
-                "subject": sender.subject,
-                "message": sender.message
+                "fromEmail": message.email,
+                "name": message.name,
+                "subject": message.subject,
+                "message": message.message
             }
         })
-        .then(console.log, console.error);
+        
+        return {
+            success: "Message sent successfully"
+        }
     } catch (error) {
         console.error(error);
+        return {
+            error: "Failed to send message"
+        }
     }
 }
 

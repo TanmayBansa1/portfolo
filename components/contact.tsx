@@ -10,10 +10,9 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { Mail, MapPin, Phone, Send } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
-
+import sendMessage from "@/lib/mailtrap"
+import {toast} from "sonner"
 export default function Contact() {
-  const { toast } = useToast()
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -38,11 +37,17 @@ export default function Contact() {
     setIsSubmitting(true)
 
     // Simulate form submission
-    setTimeout(() => {
-      toast({
-        title: "Message sent!",
-        description: "Thank you for your message. I'll get back to you soon.",
-      })
+    const result = await sendMessage({
+      message: {
+        email: formData.email,
+        name: formData.name,
+        subject: formData.subject,
+        message: formData.message
+      }
+    })
+
+    if(result.success){
+      toast.success("Thank you for your message. I'll get back to you soon.")
       setFormData({
         name: "",
         email: "",
@@ -50,7 +55,10 @@ export default function Contact() {
         message: "",
       })
       setIsSubmitting(false)
-    }, 1500)
+    }else{
+      toast.error("Message failed to send. Please try again later.")
+      setIsSubmitting(false)
+    }
   }
 
   const contactInfo = [
