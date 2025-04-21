@@ -153,7 +153,7 @@ export default function Projects() {
           className="max-w-3xl mx-auto text-center mb-16"
         >
 
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">My Projects</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">My Work</h2>
           <div className="h-1 w-20 bg-primary mx-auto mb-8 rounded-full" />
           <p className="text-muted-foreground">
             Here are some of the projects I&apos;ve worked on. Each project represents a unique challenge and learning
