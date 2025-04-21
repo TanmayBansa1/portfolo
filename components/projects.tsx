@@ -14,7 +14,7 @@ type Project = {
   description: string
   technologies: string[]
   github?: string
-  demo?: string
+  live?: string
   image: string
 }
 
@@ -38,7 +38,7 @@ export default function Projects() {
       technologies: ["NextJS", "TypeScript", "Mailtrap", "Prisma", "Clerk", "Upstash", "NeonDB", "ShadCN"],
       github: "https://github.com/TanmayBansa1/GenInvoice",
       image: "/geninvoice.png",
-      demo: "https://geninvoice.tanmay.space"
+      live: "https://geninvoice.tanmay.space"
     },
 
     {
@@ -49,7 +49,7 @@ export default function Projects() {
       technologies: ["TypeScript", "NextJS", "LangChain", "Gemini","NeonDB", "Clerk", "Stripe", "AssemblyAI", "RAG", "Firebase", "ShadCN"],
       github: "https://github.com/TanmayBansa1/RepiSage",
       image: "/replsage.png",
-      demo: "https://repl-sage.vercel.app/"
+      live: "https://repl-sage.vercel.app/"
     },
     {
       id: 2,
@@ -59,7 +59,7 @@ export default function Projects() {
       technologies: ["TypeScript", "NextJS", "Cloud Storage", "Appwrite","ShadCN"],
       github: "https://github.com/TanmayBansa1/Miseit",
       image: "/miseit.png",
-      demo: "https://mise-it.vercel.app/"
+      live: "https://mise-it.vercel.app/"
     },
     {
       id: 3,
@@ -69,7 +69,7 @@ export default function Projects() {
       technologies: ["TypeScript", "React", "Node.js", "TurboRepo", "Webhooks", "NextAuth", "Prisma", "NeonDB", "ShadCN"],
       github: "https://github.com/TanmayBansa1/Payme-App-v2",
       image: "/payme.png",
-      demo: "https://payme-app-v2.vercel.app/"
+      live: "https://payme-app-v2.vercel.app/"
     },
     {
       id: 4,
@@ -78,7 +78,7 @@ export default function Projects() {
       technologies: ["TypeScript", "React", "Honojs", "Cloudflare Workers", "Prisma", "AivenDB"],
       github: "https://github.com/TanmayBansa1/Quillcraft",
       image: "/quillcraft.png",
-      demo: "https://quilllcraft-frontend.vercel.app/"
+      live: "https://quilllcraft-frontend.vercel.app/"
     },
     {
       id: 5,
@@ -88,7 +88,7 @@ export default function Projects() {
       technologies: ["TypeScript", "NextJS", "Acertinity UI"],
       github: "https://github.com/TanmayBansa1/Muzix",
       image: "/muzix.png",
-      demo: "https://music-academy-amber-three.vercel.app/"
+      live: "https://music-academy-amber-three.vercel.app/"
     },
   ]
 
@@ -218,9 +218,9 @@ export default function Projects() {
                           </Link>
                         </Button>
                       )}
-                      {project.demo && (
+                      {project.live && (
                         <Button asChild size="sm">
-                          <Link href={project.demo} target="_blank" rel="noopener noreferrer">
+                          <Link href={project.live} target="_blank" rel="noopener noreferrer">
                             <ExternalLink className="mr-2 h-4 w-4" />
                             Demo
                           </Link>
