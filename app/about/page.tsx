@@ -51,19 +51,19 @@ export default function AboutPage() {
     <main className="min-h-screen">
       <Navbar />
 
-      <section className="pt-32 pb-20 md:py-32">
+      <section className="pt-24 pb-16 md:pt-32 md:pb-20">
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="max-w-3xl mx-auto text-center mb-16"
+            className="max-w-3xl mx-auto text-center mb-12 md:mb-16"
           >
-            <h1 className="text-3xl md:text-5xl font-bold mb-4">About Me</h1>
-            <div className="h-1 w-20 bg-primary mx-auto mb-8 rounded-full" />
+            <h1 className="text-2xl md:text-5xl font-bold mb-4">About Me</h1>
+            <div className="h-1 w-20 bg-primary mx-auto mb-6 md:mb-8 rounded-full" />
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center mb-16 md:mb-20">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
@@ -71,18 +71,18 @@ export default function AboutPage() {
               className="relative"
             >
               <div className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg blur-xl" />
-              <div className="relative bg-card rounded-lg p-6 shadow-lg border">
-                <div className="space-y-4">
+              <div className="relative bg-card rounded-lg p-4 md:p-6 shadow-lg border">
+                <div className="space-y-3 md:space-y-4">
                   <div className="flex items-center space-x-2 text-muted-foreground">
                     <MapPin className="h-4 w-4" />
                     <span>Delhi, India</span>
                   </div>
-                  <h3 className="text-xl font-semibold">Tanmay Bansal</h3>
-                  <p className="text-muted-foreground">
+                  <h3 className="text-lg md:text-xl font-semibold">Tanmay Bansal</h3>
+                  <p className="text-sm md:text-base text-muted-foreground">
                     I&apos;m a passionate full-stack developer with expertise in building modern web applications. I
                     love creating innovative solutions that solve real-world problems.
                   </p>
-                  <p className="text-muted-foreground">
+                  <p className="text-sm md:text-base text-muted-foreground">
                     My journey in web development has led me to work on various projects ranging from collaborative
                     platforms to digital wallets and content management systems.
                   </p>
@@ -94,13 +94,13 @@ export default function AboutPage() {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="space-y-6"
+              className="space-y-4 md:space-y-6"
             >
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold">What I Do</h3>
-                <ul className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
+                <h3 className="text-lg md:text-xl font-semibold">What I Do</h3>
+                <ul className="space-y-3 md:space-y-4">
                   <li className="flex items-start">
-                    <div className="mr-4 mt-1 bg-primary/10 p-1.5 rounded-full text-primary">
+                    <div className="mr-3 md:mr-4 mt-1 bg-primary/10 p-1.5 rounded-full text-primary">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
@@ -117,13 +117,13 @@ export default function AboutPage() {
                     </div>
                     <div>
                       <h4 className="font-medium">Web Development</h4>
-                      <p className="text-muted-foreground text-sm">
+                      <p className="text-muted-foreground text-xs md:text-sm">
                         Building responsive and performant web applications using modern frameworks and technologies.
                       </p>
                     </div>
                   </li>
                   <li className="flex items-start">
-                    <div className="mr-4 mt-1 bg-primary/10 p-1.5 rounded-full text-primary">
+                    <div className="mr-3 md:mr-4 mt-1 bg-primary/10 p-1.5 rounded-full text-primary">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
@@ -141,14 +141,14 @@ export default function AboutPage() {
                     </div>
                     <div>
                       <h4 className="font-medium">Full-Stack Development</h4>
-                      <p className="text-muted-foreground text-sm">
+                      <p className="text-muted-foreground text-xs md:text-sm">
                         Creating end-to-end solutions with both frontend and backend expertise, ensuring seamless user
                         experiences.
                       </p>
                     </div>
                   </li>
                   <li className="flex items-start">
-                    <div className="mr-4 mt-1 bg-primary/10 p-1.5 rounded-full text-primary">
+                    <div className="mr-3 md:mr-4 mt-1 bg-primary/10 p-1.5 rounded-full text-primary">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
@@ -167,7 +167,7 @@ export default function AboutPage() {
                     </div>
                     <div>
                       <h4 className="font-medium">Problem Solving</h4>
-                      <p className="text-muted-foreground text-sm">
+                      <p className="text-muted-foreground text-xs md:text-sm">
                         Analyzing complex problems and developing efficient solutions with clean, maintainable code.
                       </p>
                     </div>
@@ -182,45 +182,49 @@ export default function AboutPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5 }}
-              className="text-center mb-16"
+              className="text-center mb-12 md:mb-16"
             >
-              <h2 className="text-3xl font-bold mb-4">Experience</h2>
-              <div className="h-1 w-20 bg-primary mx-auto mb-8 rounded-full" />
-              <p className="text-muted-foreground">My professional journey in the world of web development.</p>
+              <h2 className="text-2xl md:text-3xl font-bold mb-4">Experience</h2>
+              <div className="h-1 w-20 bg-primary mx-auto mb-6 md:mb-8 rounded-full" />
+              <p className="text-sm md:text-base text-muted-foreground">My professional journey in the world of web development.</p>
             </motion.div>
 
             <div className="relative">
-              {/* Timeline line */}
-              <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/80 via-primary/50 to-primary/20"></div>
+              {/* Timeline line - hidden on mobile */}
+              <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 h-full w-0.5 bg-gradient-to-b from-primary/80 via-primary/50 to-primary/20"></div>
 
               {/* Experience items */}
-              <div className="space-y-12">
+              <div className="space-y-8 md:space-y-12">
                 {experiences.map((exp, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 20 }}
                     animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className={`relative flex items-center ${index % 2 === 0 ? "flex-row" : "flex-row-reverse"}`}
+                    className={`relative flex flex-col md:flex-row items-center ${
+                      index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
+                    }`}
                   >
-                    {/* Timeline dot */}
-                    <div className="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-primary z-10"></div>
+                    {/* Timeline dot - hidden on mobile */}
+                    <div className="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full bg-primary z-10"></div>
 
                     {/* Content */}
-                    <div className={`w-5/12 ${index % 2 === 0 ? "pr-8 text-right" : "pl-8 text-left"}`}>
+                    <div className={`w-full md:w-5/12 ${
+                      index % 2 === 0 ? "md:pr-8 md:text-right" : "md:pl-8 md:text-left"
+                    }`}>
                       <Card className="overflow-hidden">
-                        <CardContent className="p-6">
+                        <CardContent className="p-4 md:p-6">
                           <div className="mb-2">
                             <span className="inline-block px-2 py-1 text-xs font-medium bg-primary/10 text-primary rounded-full mb-2">
                               {exp.period}
                             </span>
                           </div>
-                          <h3 className="text-xl font-bold">{exp.title}</h3>
+                          <h3 className="text-lg md:text-xl font-bold">{exp.title}</h3>
                           <p className="text-primary font-medium">{exp.company}</p>
-                          <p className="text-muted-foreground mt-2">{exp.description}</p>
-                          <div className="flex flex-wrap gap-2 mt-4 justify-start">
+                          <p className="text-sm md:text-base text-muted-foreground mt-2">{exp.description}</p>
+                          <div className="flex flex-wrap gap-2 mt-4">
                             {exp.skills.map((skill) => (
-                              <Badge key={skill} variant="outline">
+                              <Badge key={skill} variant="outline" className="text-xs">
                                 {skill}
                               </Badge>
                             ))}
@@ -229,8 +233,8 @@ export default function AboutPage() {
                       </Card>
                     </div>
 
-                    {/* Empty space for the other side */}
-                    <div className="w-5/12"></div>
+                    {/* Empty space for the other side - only on desktop */}
+                    <div className="hidden md:block w-5/12"></div>
                   </motion.div>
                 ))}
               </div>
