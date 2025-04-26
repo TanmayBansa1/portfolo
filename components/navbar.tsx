@@ -36,7 +36,7 @@ export default function Navbar() {
   return (
     <div className="flex fixed bottom-5 justify-center w-full z-50">
       <FloatingDock
-        mobileClassName="ml-auto pr-2"
+        mobileClassName="ml-auto pr-2 mr-4 pb-2"
         items={navLinks}
       />
     </div>
