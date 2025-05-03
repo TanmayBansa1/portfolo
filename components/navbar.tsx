@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { ModeToggle } from "@/components/mode-toggle"
-import { Briefcase, Code, Github, Home, Linkedin, Mail,Twitter, User2 } from "lucide-react"
+import { Briefcase, Code, DownloadCloud, Github, Home, Linkedin, Mail,Twitter, User2 } from "lucide-react"
 import { FloatingDock } from "./ui/floating-dock"
 
 export default function Navbar() {
@@ -31,6 +31,8 @@ export default function Navbar() {
     { title: "Github", href: "https://github.com/TanmayBansa1", icon: <Github className="h-full w-full text-neutral-500 dark:text-neutral-300" />, target: "_blank" },
     { title: "LinkedIn", href: "https://www.linkedin.com/in/tanmay-bansal-40bb44199/", icon: <Linkedin className="h-full w-full text-neutral-500 dark:text-neutral-300" />, target: "_blank" },
     { title: "X", href: "https://x.com/K_A_I11", icon: <Twitter className="h-full w-full text-neutral-500 dark:text-neutral-300" />, target: "_blank" },
+    { title: "Resume", href: "https://drive.google.com/file/d/1a2Iq7j-0wrsP8yqj0wQS3zTneHxFJACK/view", target:"_blank", icon: <DownloadCloud className="h-full w-full text-neutral-500 dark:text-neutral-300"></DownloadCloud>
+    }
   ]
 
   return (
