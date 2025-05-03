@@ -1,6 +1,6 @@
 "use client"
 import { useRef, useState, useEffect } from "react"
-import { motion, useAnimation, useMotionValue } from "framer-motion"
+import { motion, useAnimation, useMotionValue, useSpring, useTransform } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -111,7 +111,9 @@ export default function Projects() {
 
   // Animation controls for desktop
   const controls = useAnimation()
-  const [x, setX] = useState(0)
+  const x = useMotionValue(0)
+  const springConfig = { damping: 20, stiffness: 100, mass: 0.5 }
+  const xSpring = useSpring(x, springConfig)
 
   // Start the animation for desktop
   useEffect(() => {
@@ -122,13 +124,10 @@ export default function Projects() {
       if (!isPaused) {
         const elapsed = now - lastTime
         lastTime = now
-        setX((prev) => {
-          let next = prev - (elapsed * 0.08)
-          if (Math.abs(next) >= TOTAL_WIDTH) {
-            next = 0
-          }
-          return next
-        })
+        x.set(x.get() - (elapsed * 0.05)) // Slower speed for smoother animation
+        if (Math.abs(x.get()) >= TOTAL_WIDTH) {
+          x.set(0)
+        }
       } else {
         lastTime = now
       }
@@ -141,14 +140,25 @@ export default function Projects() {
   // Fade in/out based on card position (desktop only)
   function getOpacity(cardIndex: number) {
     if (isMobile) return 1
-    const leftEdge = -x + cardIndex * CARD_WIDTH
-    const fadeWidth = 100
+    const leftEdge = -xSpring.get() + cardIndex * CARD_WIDTH
+    const fadeWidth = 200 // Increased fade width for smoother transition
     if (leftEdge < fadeWidth) {
-      return leftEdge / fadeWidth
+      return Math.max(0, leftEdge / fadeWidth)
     } else if (leftEdge > TOTAL_WIDTH - fadeWidth) {
-      return (TOTAL_WIDTH - leftEdge) / fadeWidth
+      return Math.max(0, (TOTAL_WIDTH - leftEdge) / fadeWidth)
     }
     return 1
+  }
+
+  // Scale based on position for 3D effect
+  function getScale(cardIndex: number) {
+    if (isMobile) return 1
+    const leftEdge = -xSpring.get() + cardIndex * CARD_WIDTH
+    const center = TOTAL_WIDTH / 2
+    const distanceFromCenter = Math.abs(leftEdge - center)
+    const maxDistance = TOTAL_WIDTH / 2
+    const scale = 1 - (distanceFromCenter / maxDistance) * 0.1
+    return Math.max(0.9, scale)
   }
 
   return (
@@ -170,10 +180,8 @@ export default function Projects() {
         </motion.div>
 
         {isMobile ? (
-          // Mobile view with Aceternity UI Carousel
           <ProjectCarousel projects={originalProjects} />
         ) : (
-          // Desktop view with horizontal scroll
           <div
             className="relative overflow-hidden"
             onMouseEnter={() => setIsPaused(true)}
@@ -184,32 +192,43 @@ export default function Projects() {
             <div ref={containerRef} className="flex overflow-hidden py-8">
               <motion.div
                 className="flex"
-                style={{ x }}
+                style={{ x: xSpring }}
                 animate={controls}
               >
                 {projects.map((project, index) => (
                   <motion.div
                     key={`${project.id}-${index}`}
-                    className="flex-shrink-0 w-[300px] md:w-[350px] mx-3"
-                    style={{ opacity: getOpacity(index) }}
-                    initial={{ opacity: 0, x: 100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -100 }}
-                    transition={{ duration: 0.5 }}
-                    whileHover={{ scale: 1.03, zIndex: 20 }}
+                    className="flex-shrink-0 w-[350px] mx-3"
+                    style={{ 
+                      opacity: getOpacity(index),
+                      scale: getScale(index),
+                      rotateY: useTransform(xSpring, (value) => {
+                        const leftEdge = -value + index * CARD_WIDTH
+                        const center = TOTAL_WIDTH / 2
+                        const distanceFromCenter = leftEdge - center
+                        return distanceFromCenter * 0.0005
+                      })
+                    }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    whileHover={{ 
+                      scale: 1.05,
+                      zIndex: 20,
+                      transition: { duration: 0.2 }
+                    }}
                   >
-                    <Card className="h-full flex flex-col overflow-hidden group hover:shadow-lg transition-all duration-300 border">
-                      <div className="relative overflow-hidden">
-                        <div className="h-48 bg-muted overflow-hidden">
-                          <img
-                            src={project.image || "/placeholder.svg"}
-                            alt={project.title}
-                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                          />
-                        </div>
-                        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
+                    <Card className="h-[500px] flex flex-col overflow-hidden group hover:shadow-xl transition-all duration-300 border">
+                      <div className="relative overflow-hidden h-48">
+                        <motion.img
+                          src={project.image || "/placeholder.svg"}
+                          alt={project.title}
+                          className="w-full h-full object-cover"
+                          whileHover={{ scale: 1.1 }}
+                          transition={{ duration: 0.3 }}
+                        />
                       </div>
-                      <CardHeader>
+                      <CardHeader className="flex-none">
                         <CardTitle>{project.title}</CardTitle>
                         <CardDescription className="line-clamp-2">{project.description}</CardDescription>
                       </CardHeader>
@@ -222,7 +241,7 @@ export default function Projects() {
                           ))}
                         </div>
                       </CardContent>
-                      <CardFooter className="flex justify-between">
+                      <CardFooter className="flex-none">
                         {project.github && (
                           <Button asChild variant="outline" size="sm">
                             <Link href={project.github} target="_blank" rel="noopener noreferrer">
