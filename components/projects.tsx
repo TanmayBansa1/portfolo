@@ -1,12 +1,13 @@
 "use client"
 import { useRef, useState, useEffect } from "react"
-import { motion, useAnimation, useMotionValue } from "framer-motion"
+import { motion, useAnimation, useMotionValue, useSpring, useTransform } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Github } from "lucide-react"
 import Link from "next/link"
+import { ProjectCarousel } from "@/components/project-carousel"
 
 type Project = {
   id: number
@@ -18,7 +19,6 @@ type Project = {
   image: string
 }
 
-
 export default function Projects() {
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -28,6 +28,17 @@ export default function Projects() {
   const [isPaused, setIsPaused] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const [containerWidth, setContainerWidth] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Check if mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Define the original projects
   const originalProjects: Project[] = [
@@ -40,7 +51,6 @@ export default function Projects() {
       image: "/geninvoice.png",
       live: "https://geninvoice.tanmay.space"
     },
-
     {
       id: 1,
       title: "ReplSage",
@@ -99,26 +109,25 @@ export default function Projects() {
   const CARD_WIDTH = 350 + 24 // 350px + mx-3 (12px each side)
   const TOTAL_WIDTH = CARD_WIDTH * originalProjects.length
 
-  // Animation controls
+  // Animation controls for desktop
   const controls = useAnimation()
-  const [x, setX] = useState(0)
+  const x = useMotionValue(0)
+  const springConfig = { damping: 20, stiffness: 100, mass: 0.5 }
+  const xSpring = useSpring(x, springConfig)
 
-  // Start the animation
+  // Start the animation for desktop
   useEffect(() => {
-    if (!inView) return
+    if (!inView || isMobile) return
     let frame: number
     let lastTime = performance.now()
     const animate = (now: number) => {
       if (!isPaused) {
         const elapsed = now - lastTime
         lastTime = now
-        setX((prev) => {
-          let next = prev - (elapsed * 0.08) // speed: adjust 0.08 for faster/slower
-          if (Math.abs(next) >= TOTAL_WIDTH) {
-            next = 0
-          }
-          return next
-        })
+        x.set(x.get() - (elapsed * 0.05)) // Slower speed for smoother animation
+        if (Math.abs(x.get()) >= TOTAL_WIDTH) {
+          x.set(0)
+        }
       } else {
         lastTime = now
       }
@@ -126,33 +135,42 @@ export default function Projects() {
     }
     frame = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(frame)
-  }, [isPaused, inView, TOTAL_WIDTH])
+  }, [isPaused, inView, TOTAL_WIDTH, isMobile])
 
-  // Fade in/out based on card position
+  // Fade in/out based on card position (desktop only)
   function getOpacity(cardIndex: number) {
-    const leftEdge = -x + cardIndex * CARD_WIDTH
-    const fadeWidth = 100 // px, adjust for wider fade
+    if (isMobile) return 1
+    const leftEdge = -xSpring.get() + cardIndex * CARD_WIDTH
+    const fadeWidth = 200 // Increased fade width for smoother transition
     if (leftEdge < fadeWidth) {
-      return leftEdge / fadeWidth
+      return Math.max(0, leftEdge / fadeWidth)
     } else if (leftEdge > TOTAL_WIDTH - fadeWidth) {
-      return (TOTAL_WIDTH - leftEdge) / fadeWidth
+      return Math.max(0, (TOTAL_WIDTH - leftEdge) / fadeWidth)
     }
     return 1
   }
 
-  return (
-    <section id="projects" className="py-20 md:py-32  bg-[radial-gradient(circle_farthest-side,rgba(177,156,217,.35),rgba(255,255,255,0))]
-    dark:bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]" ref={ref}>
+  // Scale based on position for 3D effect
+  function getScale(cardIndex: number) {
+    if (isMobile) return 1
+    const leftEdge = -xSpring.get() + cardIndex * CARD_WIDTH
+    const center = TOTAL_WIDTH / 2
+    const distanceFromCenter = Math.abs(leftEdge - center)
+    const maxDistance = TOTAL_WIDTH / 2
+    const scale = 1 - (distanceFromCenter / maxDistance) * 0.1
+    return Math.max(0.9, scale)
+  }
 
-      
-      <div className="container mx-auto px-4 ">
+  return (
+    <section id="projects" className="py-20 md:py-32 bg-[radial-gradient(circle_farthest-side,rgba(177,156,217,.35),rgba(255,255,255,0))]
+    dark:bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]" ref={ref}>
+      <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.5 }}
           className="max-w-3xl mx-auto text-center mb-16"
         >
-
           <h2 className="text-3xl md:text-4xl font-bold mb-4">My Work</h2>
           <div className="h-1 w-20 bg-primary mx-auto mb-8 rounded-full" />
           <p className="text-muted-foreground">
@@ -161,78 +179,93 @@ export default function Projects() {
           </p>
         </motion.div>
 
-        <div
-          className="relative overflow-hidden"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-        >
-          <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent z-10"></div>
-          <div ref={containerRef} className="flex overflow-hidden py-8">
-            <motion.div
-              className="flex"
-              style={{ x }}
-              animate={controls}
-            >
-              {projects.map((project, index) => (
-                <motion.div
-                  key={`${project.id}-${index}`}
-                  className="flex-shrink-0 w-[300px] md:w-[350px] mx-3"
-                  style={{ opacity: getOpacity(index) }}
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -100 }}
-                  transition={{ duration: 0.5 }}
-                  whileHover={{ scale: 1.03, zIndex: 20 }}
-                >
-                  <Card className="h-full flex flex-col overflow-hidden group hover:shadow-lg transition-all duration-300 border">
-                    <div className="relative overflow-hidden">
-                      <div className="h-48 bg-muted overflow-hidden">
-                        <img
+        {isMobile ? (
+          <ProjectCarousel projects={originalProjects} />
+        ) : (
+          <div
+            className="relative overflow-hidden"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent z-10"></div>
+            <div ref={containerRef} className="flex overflow-hidden py-8">
+              <motion.div
+                className="flex"
+                style={{ x: xSpring }}
+                animate={controls}
+              >
+                {projects.map((project, index) => (
+                  <motion.div
+                    key={`${project.id}-${index}`}
+                    className="flex-shrink-0 w-[350px] mx-3"
+                    style={{ 
+                      opacity: getOpacity(index),
+                      scale: getScale(index),
+                      rotateY: useTransform(xSpring, (value) => {
+                        const leftEdge = -value + index * CARD_WIDTH
+                        const center = TOTAL_WIDTH / 2
+                        const distanceFromCenter = leftEdge - center
+                        return distanceFromCenter * 0.0005
+                      })
+                    }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    whileHover={{ 
+                      scale: 1.05,
+                      zIndex: 20,
+                      transition: { duration: 0.2 }
+                    }}
+                  >
+                    <Card className="h-[500px] flex flex-col overflow-hidden group hover:shadow-xl transition-all duration-300 border">
+                      <div className="relative overflow-hidden h-48">
+                        <motion.img
                           src={project.image || "/placeholder.svg"}
                           alt={project.title}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          className="w-full h-full object-cover"
+                          whileHover={{ scale: 1.1 }}
+                          transition={{ duration: 0.3 }}
                         />
                       </div>
-                      <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
-                    </div>
-                    <CardHeader>
-                      <CardTitle>{project.title}</CardTitle>
-                      <CardDescription className="line-clamp-2">{project.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                      <div className="flex flex-wrap gap-2 mt-2">
-                        {project.technologies.map((tech) => (
-                          <Badge key={tech} variant="secondary">
-                            {tech}
-                          </Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                    <CardFooter className="flex justify-between">
-                      {project.github && (
-                        <Button asChild variant="outline" size="sm">
-                          <Link href={project.github} target="_blank" rel="noopener noreferrer">
-                            <Github className="mr-2 h-4 w-4" />
-                            Code
-                          </Link>
-                        </Button>
-                      )}
-                      {project.live && (
-                        <Button asChild size="sm">
-                          <Link href={project.live} target="_blank" rel="noopener noreferrer">
-                            <ExternalLink className="mr-2 h-4 w-4" />
-                            Demo
-                          </Link>
-                        </Button>
-                      )}
-                    </CardFooter>
-                  </Card>
-                </motion.div>
-              ))}
-            </motion.div>
+                      <CardHeader className="flex-none">
+                        <CardTitle>{project.title}</CardTitle>
+                        <CardDescription className="line-clamp-2">{project.description}</CardDescription>
+                      </CardHeader>
+                      <CardContent className="flex-grow">
+                        <div className="flex flex-wrap gap-2 mt-2">
+                          {project.technologies.map((tech) => (
+                            <Badge key={tech} variant="secondary">
+                              {tech}
+                            </Badge>
+                          ))}
+                        </div>
+                      </CardContent>
+                      <CardFooter className="flex-none">
+                        {project.github && (
+                          <Button asChild variant="outline" size="sm">
+                            <Link href={project.github} target="_blank" rel="noopener noreferrer">
+                              <Github className="mr-2 h-4 w-4" />
+                              Code
+                            </Link>
+                          </Button>
+                        )}
+                        {project.live && (
+                          <Button asChild size="sm">
+                            <Link href={project.live} target="_blank" rel="noopener noreferrer">
+                              <ExternalLink className="mr-2 h-4 w-4" />
+                              Demo
+                            </Link>
+                          </Button>
+                        )}
+                      </CardFooter>
+                    </Card>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   )
