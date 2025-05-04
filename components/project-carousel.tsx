@@ -64,7 +64,7 @@ export function ProjectCarousel({ projects }: ProjectCarouselProps) {
                 </div>
                 <CardHeader>
                   <CardTitle>{project.title}</CardTitle>
-                  <CardDescription className="line-clamp-2">{project.description}</CardDescription>
+                  <CardDescription>{project.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow">
                   <div className="flex flex-wrap gap-2 mt-2">

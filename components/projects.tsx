@@ -223,7 +223,7 @@ export default function Projects() {
                       </div>
                       <CardHeader className="flex-none min-h-[100px]">
                         <CardTitle className="line-clamp-1">{project.title}</CardTitle>
-                        <CardDescription className="line-clamp-2">{project.description}</CardDescription>
+                        <CardDescription className="line-clamp-3">{project.description}</CardDescription>
                       </CardHeader>
                       <CardContent className="flex-grow min-h-[100px]">
                         <div className="flex flex-wrap gap-2">
