@@ -32,7 +32,6 @@ export function ProjectCarousel({ projects }: ProjectCarouselProps) {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + projects.length) % projects.length);
   };
 
-  const currentProject = projects[currentIndex];
 
   return (
     <div className="relative w-full mx-auto" aria-labelledby={`carousel-heading-${id}`}>
