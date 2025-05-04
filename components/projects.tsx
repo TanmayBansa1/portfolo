@@ -1,6 +1,6 @@
 "use client"
 import { useRef, useState, useEffect } from "react"
-import { motion, useAnimation, useMotionValue, useSpring, useTransform } from "framer-motion"
+import { motion, useAnimation, useMotionValue, useSpring } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -27,7 +27,6 @@ export default function Projects() {
 
   const [isPaused, setIsPaused] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
-  const [containerWidth, setContainerWidth] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
 
   // Check if mobile on mount and resize
@@ -106,7 +105,7 @@ export default function Projects() {
   const projects = [...originalProjects, ...originalProjects]
 
   // Calculate card width (including margin)
-  const CARD_WIDTH = 350 + 24 // 350px + mx-3 (12px each side)
+  const CARD_WIDTH = 400 + 24 // Increased from 350px to 400px + mx-3 (12px each side)
   const TOTAL_WIDTH = CARD_WIDTH * originalProjects.length
 
   // Animation controls for desktop
@@ -198,16 +197,10 @@ export default function Projects() {
                 {projects.map((project, index) => (
                   <motion.div
                     key={`${project.id}-${index}`}
-                    className="flex-shrink-0 w-[350px] mx-3"
+                    className="flex-shrink-0 w-[400px] mx-3"
                     style={{ 
                       opacity: getOpacity(index),
                       scale: getScale(index),
-                      rotateY: useTransform(xSpring, (value) => {
-                        const leftEdge = -value + index * CARD_WIDTH
-                        const center = TOTAL_WIDTH / 2
-                        const distanceFromCenter = leftEdge - center
-                        return distanceFromCenter * 0.0005
-                      })
                     }}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -219,7 +212,7 @@ export default function Projects() {
                     }}
                   >
                     <Card className="h-[500px] flex flex-col overflow-hidden group hover:shadow-xl transition-all duration-300 border">
-                      <div className="relative overflow-hidden h-48">
+                      <div className="relative h-[200px] overflow-hidden">
                         <motion.img
                           src={project.image || "/placeholder.svg"}
                           alt={project.title}
@@ -228,12 +221,12 @@ export default function Projects() {
                           transition={{ duration: 0.3 }}
                         />
                       </div>
-                      <CardHeader className="flex-none">
-                        <CardTitle>{project.title}</CardTitle>
+                      <CardHeader className="flex-none min-h-[100px]">
+                        <CardTitle className="line-clamp-1">{project.title}</CardTitle>
                         <CardDescription className="line-clamp-2">{project.description}</CardDescription>
                       </CardHeader>
-                      <CardContent className="flex-grow">
-                        <div className="flex flex-wrap gap-2 mt-2">
+                      <CardContent className="flex-grow min-h-[100px]">
+                        <div className="flex flex-wrap gap-2">
                           {project.technologies.map((tech) => (
                             <Badge key={tech} variant="secondary">
                               {tech}
@@ -241,23 +234,25 @@ export default function Projects() {
                           ))}
                         </div>
                       </CardContent>
-                      <CardFooter className="flex-none">
-                        {project.github && (
-                          <Button asChild variant="outline" size="sm">
-                            <Link href={project.github} target="_blank" rel="noopener noreferrer">
-                              <Github className="mr-2 h-4 w-4" />
-                              Code
-                            </Link>
-                          </Button>
-                        )}
-                        {project.live && (
-                          <Button asChild size="sm">
-                            <Link href={project.live} target="_blank" rel="noopener noreferrer">
-                              <ExternalLink className="mr-2 h-4 w-4" />
-                              Demo
-                            </Link>
-                          </Button>
-                        )}
+                      <CardFooter className="flex-none h-[50px]">
+                        <div className="flex gap-2 w-full">
+                          {project.github && (
+                            <Button asChild variant="outline" size="sm" className="flex-1">
+                              <Link href={project.github} target="_blank" rel="noopener noreferrer">
+                                <Github className="mr-2 h-4 w-4" />
+                                Code
+                              </Link>
+                            </Button>
+                          )}
+                          {project.live && (
+                            <Button asChild size="sm" className="flex-1">
+                              <Link href={project.live} target="_blank" rel="noopener noreferrer">
+                                <ExternalLink className="mr-2 h-4 w-4" />
+                                Demo
+                              </Link>
+                            </Button>
+                          )}
+                        </div>
                       </CardFooter>
                     </Card>
                   </motion.div>
