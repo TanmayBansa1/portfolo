@@ -346,7 +346,7 @@ export default function Hero() {
                 <Link href="#contact">Contact Me</Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-full">
-                <Link href="https://drive.google.com/file/d/1a2Iq7j-0wrsP8yqj0wQS3zTneHxFJACK/view" target="_blank">
+                <Link href="https://drive.google.com/file/d/1yvOApjXOsKG9z5FpXxbMf2WIqx3_PrS0/view?usp=drive_link" target="_blank">
                     <DownloadCloudIcon className="h-4 w-4" /> Resume
                 </Link>
               </Button>
