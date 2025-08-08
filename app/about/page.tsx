@@ -16,11 +16,18 @@ export default function AboutPage() {
 
   const experiences = [
     {
+      title: "Software Developer Intern",
+      company: "Bachatt",
+      period: "May 2025 - July 2025",
+      description: "• Built an analytics platform that boosted growth by 30%, centralizing business intelligence across multiple platforms (CleverTap, Razorpay, Google Ads, Meta Ads) and increasing analysis efficiency by 40%, D1 to D7 retention by 80%, and reducing cancellations by 70%. • Engineered a multi-lender integration framework serving 40% of user base, implementing external APIs for automated data exchange (reducing effort by 80%) and streamlined user onboarding via Lead Generation and Eligibility framework using AWS S3, Kafka, MongoDB, reducing customer acquisition cost by 70%.",
+      skills: ["AWS", "Kubernetes", "PostgreSQL", "TypeScript", "Kafka", "Java", "Spring Boot", "Google BigQuery", "Apache Superset", "Airbyte", "Amazon DMS","Data Pipelining", "Business Intelligence"],
+    },
+    {
       title: "Open Source Contributor",
       company: "Sugar Labs",
-      period: "2025 - Present",
+      period: "Jan 2025 - July 2025",
       description:
-        "Contributing to the sugar labs organisation codebase, helping to improve and maintain existing projects, and learning new skills.",
+        "Contributed to the sugar labs organisation codebase, helping to improve and maintain existing projects, and learning new skills.",
       skills: ["React", "TypeScript", "Tailwindcss"],
     },
     {
@@ -219,9 +226,15 @@ export default function AboutPage() {
                               {exp.period}
                             </span>
                           </div>
-                          <h3 className="text-lg md:text-xl font-bold">{exp.title}</h3>
-                          <p className="text-primary font-medium">{exp.company}</p>
-                          <p className="text-sm md:text-base text-muted-foreground mt-2">{exp.description}</p>
+                          <h3 className="text-lg md:text-xl text-left font-bold">{exp.title}</h3>
+                           <p className="text-primary text-left font-medium">{exp.company}</p>
+                           <p className="text-sm md:text-left text-muted-foreground mt-2">
+                             {exp.description.split('•').filter(bullet => bullet.trim()).map((bullet, index) => (
+                               <span key={index} className="block mb-2">
+                                 • {bullet.trim()}
+                               </span>
+                             ))}
+                           </p>
                           <div className="flex flex-wrap gap-2 mt-4">
                             {exp.skills.map((skill) => (
                               <Badge key={skill} variant="outline" className="text-xs">
