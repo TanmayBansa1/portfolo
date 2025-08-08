@@ -35,7 +35,7 @@ export default function AboutPage() {
       company: "Ox pro Media",
       period: "May 2024 - June 2024",
       description:
-        "Developed and maintained full-stack applications, and implemented new features. WOrked extensively on a inhouse storage solution for the employees",
+        "Developed and maintained full-stack applications, and implemented new features. Worked extensively on a inhouse storage solution for the employees",
       skills: ["Appwrite", "Next.js", "PostgreSQL", "Prisma", "Stripe"],
     },
     {
