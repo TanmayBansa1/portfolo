@@ -88,7 +88,7 @@ export function ProjectCarousel({ projects }: ProjectCarouselProps) {
                     <Button asChild size="sm">
                       <Link href={project.live} target="_blank" rel="noopener noreferrer">
                         <ExternalLink className="mr-2 h-4 w-4" />
-                        Demo
+                        Live
                       </Link>
                     </Button>
                   )}

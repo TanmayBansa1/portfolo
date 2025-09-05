@@ -43,63 +43,131 @@ export default function Projects() {
   const originalProjects: Project[] = [
     {
       id: 0,
-      title: "GenInvoice",
-      description: "A web application designed to streamline invoice generation and management.",
-      technologies: ["NextJS", "TypeScript", "Mailtrap", "Prisma", "Clerk", "Upstash", "NeonDB", "ShadCN"],
-      github: "https://github.com/TanmayBansa1/GenInvoice",
-      image: "/geninvoice.png",
-      live: "https://geninvoice.tanmay.space"
+      title: "SunoAI",
+      description:
+        "I built a ResNet-inspired model that listens to sounds, turns them into spectrograms, and classifies them across 50 categories",
+      technologies: [
+        "CNN",
+        "ML",
+        "Python",
+        "NextJS",
+        "PyTorch",
+        "ResNet",
+        "Modal",
+        "Audio",
+        "Mel Spectrograms",
+        "ShadCN",
+      ],
+      image: "/sunoai.png",
+      github:
+        "https://github.com/TanmayBansa1/CNN-Audio-Classifier",
+      live: "https://sunoai.tanmay.space/",
     },
     {
       id: 1,
-      title: "ReplSage",
+      title: "GenInvoice",
       description:
-        "An innovative web application designed to streamline project collaboration, knowledge management, and AI-assisted development.",
-      technologies: ["TypeScript", "NextJS", "LangChain", "Gemini","NeonDB", "Clerk", "Stripe", "AssemblyAI", "RAG", "Firebase", "ShadCN"],
-      github: "https://github.com/TanmayBansa1/RepiSage",
-      image: "/replsage.png",
-      live: "https://repl-sage.vercel.app/"
+        "A web application designed to streamline invoice generation and management.",
+      technologies: [
+        "NextJS",
+        "TypeScript",
+        "Mailtrap",
+        "Prisma",
+        "Clerk",
+        "Upstash",
+        "NeonDB",
+        "ShadCN",
+      ],
+      github: "https://github.com/TanmayBansa1/GenInvoice",
+      image: "/geninvoice.png",
+      live: "https://geninvoice.tanmay.space",
     },
     {
       id: 2,
-      title: "Miseit",
+      title: "ReplSage",
       description:
-        "A robust and intuitive storage application designed to streamline organization and management of files with a seamless experience.",
-      technologies: ["TypeScript", "NextJS", "Cloud Storage", "Appwrite","ShadCN"],
-      github: "https://github.com/TanmayBansa1/Miseit",
-      image: "/miseit.png",
-      live: "https://mise-it.vercel.app/"
+        "An innovative web application designed to streamline project collaboration, knowledge management, and AI-assisted development.",
+      technologies: [
+        "TypeScript",
+        "NextJS",
+        "LangChain",
+        "Gemini",
+        "NeonDB",
+        "Clerk",
+        "Stripe",
+        "AssemblyAI",
+        "RAG",
+        "Firebase",
+        "ShadCN",
+      ],
+      github: "https://github.com/TanmayBansa1/ReplSage",
+      image: "/replsage.png",
+      live: "https://replsage.tanmay.space/",
     },
     {
       id: 3,
-      title: "Payme-App-v2",
+      title: "Miseit",
       description:
-        "A modern digital wallet application featuring real-time transactions, authentication, and a clean UI.",
-      technologies: ["TypeScript", "React", "Node.js", "TurboRepo", "Webhooks", "NextAuth", "Prisma", "NeonDB", "ShadCN"],
-      github: "https://github.com/TanmayBansa1/Payme-App-v2",
-      image: "/payme.png",
-      live: "https://payme-app-v2.vercel.app/"
+        "A robust and intuitive storage application designed to streamline organization and management of files with a seamless experience.",
+      technologies: [
+        "TypeScript",
+        "NextJS",
+        "Cloud Storage",
+        "Appwrite",
+        "ShadCN",
+      ],
+      github: "https://github.com/TanmayBansa1/Miseit",
+      image: "/miseit.png",
+      live: "https://miseit.tanmay.space/",
     },
     {
       id: 4,
-      title: "Quillcraft",
-      description: "A blogging platform for people around the world to share their thoughts and stories.",
-      technologies: ["TypeScript", "React", "Honojs", "Cloudflare Workers", "Prisma", "AivenDB"],
-      github: "https://github.com/TanmayBansa1/Quillcraft",
-      image: "/quillcraft.png",
-      live: "https://quilllcraft-frontend.vercel.app/"
+      title: "Payme-App-v2",
+      description:
+        "A modern digital wallet application featuring real-time transactions, authentication, and a clean UI.",
+      technologies: [
+        "TypeScript",
+        "React",
+        "Node.js",
+        "TurboRepo",
+        "Webhooks",
+        "NextAuth",
+        "Prisma",
+        "NeonDB",
+        "ShadCN",
+      ],
+      github: "https://github.com/TanmayBansa1/Payme-App-v2",
+      image: "/payme.png",
+      live: "https://payme.tanmay.space/",
     },
     {
       id: 5,
+      title: "Quillcraft",
+      description:
+        "A blogging platform for people around the world to share their thoughts and stories.",
+      technologies: [
+        "TypeScript",
+        "React",
+        "Honojs",
+        "Cloudflare Workers",
+        "Prisma",
+        "AivenDB",
+      ],
+      github: "https://github.com/TanmayBansa1/Quillcraft",
+      image: "/quillcraft.png",
+      live: "https://quillcraft.tanmay.space/",
+    },
+    {
+      id: 6,
       title: "Muzix",
       description:
         "A website designed for an online music academy to provide an exceptional learning experience for music enthusiasts.",
       technologies: ["TypeScript", "NextJS", "Acertinity UI"],
       github: "https://github.com/TanmayBansa1/Muzix",
       image: "/muzix.png",
-      live: "https://music-academy-amber-three.vercel.app/"
+      live: "https://muzix.tanmay.space/",
     },
-  ]
+  ];
 
   // Duplicate projects for seamless looping
   const projects = [...originalProjects, ...originalProjects]
@@ -248,7 +316,7 @@ export default function Projects() {
                             <Button asChild size="sm" className="flex-1">
                               <Link href={project.live} target="_blank" rel="noopener noreferrer">
                                 <ExternalLink className="mr-2 h-4 w-4" />
-                                Demo
+                                Live
                               </Link>
                             </Button>
                           )}
