@@ -92,7 +92,7 @@ export default function Navbar() {
     },
     {
       title: "Blogs",
-      href: "https://tanmaybansal.hashnode.dev/",
+      href: "https://medium.com/@tanmay.bansal20",
       target: "_blank",
       icon: (
         <Pencil className="h-full w-full text-neutral-500 dark:text-neutral-300"></Pencil>
