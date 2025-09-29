@@ -270,8 +270,14 @@ export default function Hero() {
   }, [mounted])
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-0 hero-mask" />
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+    >
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 w-full h-full pointer-events-none z-0 hero-mask"
+      />
       <div className="container mx-auto px-4 z-10 py-20 md:py-32">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <motion.div
@@ -342,12 +348,25 @@ export default function Hero() {
                   View My Work <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="rounded-full"
+              >
                 <Link href="#contact">Contact Me</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-full">
-                <Link href="https://drive.google.com/file/d/1yvOApjXOsKG9z5FpXxbMf2WIqx3_PrS0/view?usp=drive_link" target="_blank">
-                    <DownloadCloudIcon className="h-4 w-4" /> Resume
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="rounded-full"
+              >
+                <Link
+                  href="https://drive.google.com/file/d/1XHREvJwu8655Ssfi7yqv5--zVUuE6FLL/view?usp=drive_link"
+                  target="_blank"
+                >
+                  <DownloadCloudIcon className="h-4 w-4" /> Resume
                 </Link>
               </Button>
             </motion.div>
@@ -400,7 +419,10 @@ export default function Hero() {
                 <div className="relative w-64 h-64 animate-float">
                   <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 blur-md opacity-70" />
                   <div className="absolute inset-2 rounded-full bg-background flex items-center justify-center overflow-hidden">
-                    <canvas ref={globeCanvasRef} className="w-full h-full pointer-events-none z-0" />
+                    <canvas
+                      ref={globeCanvasRef}
+                      className="w-full h-full pointer-events-none z-0"
+                    />
                   </div>
                 </div>
               </div>
@@ -409,11 +431,14 @@ export default function Hero() {
         </div>
       </div>
 
-      <Link href="#projects" className="absolute bottom-24 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <Link
+        href="#projects"
+        className="absolute bottom-24 left-1/2 transform -translate-x-1/2 animate-bounce"
+      >
         <div className="w-6 h-10 rounded-full border-2 border-muted-foreground flex justify-center items-start p-1">
           <div className="w-1 h-2 bg-muted-foreground rounded-full animate-pulse" />
         </div>
       </Link>
     </section>
-  )
+  );
 }
