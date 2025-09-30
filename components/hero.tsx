@@ -2,32 +2,34 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, DownloadCloudIcon, Github, Linkedin, Twitter } from "lucide-react"
+import { ArrowRight, DownloadCloudIcon, Github, Linkedin, Twitter, Sparkles } from "lucide-react"
 import Link from "next/link"
 import { motion } from "framer-motion"
 import { TypeAnimation } from "react-type-animation"
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
-  const globeCanvasRef = useRef<HTMLCanvasElement>(null)
   const [mounted, setMounted] = useState(false)
-
-  // Tech logos for the globe
-  const techLogos = [
-    { name: "React", color: "#61DAFB" },
-    { name: "Node.js", color: "#339933" },
-    { name: "JavaScript", color: "#F7DF1E" },
-    { name: "TypeScript", color: "#3178C6" },
-    { name: "HTML", color: "#E34F26" },
-    { name: "CSS", color: "#1572B6" },
-    { name: "Next.js", color: "#000000" },
-    { name: "MongoDB", color: "#47A248" },
-    { name: "Git", color: "#F05032" },
-  ]
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
     setMounted(true)
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+    
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
 
+  // Check if dark mode is active
+  const isDarkMode = () => {
+    return document.documentElement.classList.contains('dark')
+  }
+
+  // Sophisticated particle animation
+  useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -43,29 +45,45 @@ export default function Hero() {
       size: number
       speedX: number
       speedY: number
-      color: string
+      opacity: number
     }[] = []
 
     const createParticles = () => {
-      const particleCount = Math.min(Math.floor(window.innerWidth * 0.05), 100)
+      const particleCount = Math.min(Math.floor(window.innerWidth * 0.03), 80)
       for (let i = 0; i < particleCount; i++) {
         particles.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          size: Math.random() * 3 + 1,
-          speedX: (Math.random() - 0.5) * 0.5,
-          speedY: (Math.random() - 0.5) * 0.5,
-          color: `rgba(123, 97, 255, ${Math.random() * 0.5 + 0.1})`,
+          size: Math.random() * 2 + 0.5,
+          speedX: (Math.random() - 0.5) * 0.3,
+          speedY: (Math.random() - 0.5) * 0.3,
+          opacity: Math.random() * 0.5 + 0.2,
         })
       }
     }
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
+      const darkMode = isDarkMode()
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i]
-        ctx.fillStyle = p.color
+        
+        // Dynamic gradient based on theme
+        const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2)
+        if (darkMode) {
+          // Light particles for dark mode
+          gradient.addColorStop(0, `rgba(255, 255, 255, ${p.opacity})`)
+          gradient.addColorStop(0.5, `rgba(192, 192, 192, ${p.opacity * 0.6})`)
+          gradient.addColorStop(1, `rgba(128, 128, 128, 0)`)
+        } else {
+          // Dark particles for light mode
+          gradient.addColorStop(0, `rgba(50, 50, 50, ${p.opacity})`)
+          gradient.addColorStop(0.5, `rgba(80, 80, 80, ${p.opacity * 0.6})`)
+          gradient.addColorStop(1, `rgba(128, 128, 128, 0)`)
+        }
+        
+        ctx.fillStyle = gradient
         ctx.beginPath()
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
         ctx.fill()
@@ -78,16 +96,21 @@ export default function Hero() {
         if (p.y > canvas.height) p.y = 0
         if (p.y < 0) p.y = canvas.height
 
-        // Connect particles that are close to each other
+        // Connect nearby particles with theme-aware lines
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j]
           const dx = p.x - p2.x
           const dy = p.y - p2.y
           const distance = Math.sqrt(dx * dx + dy * dy)
 
-          if (distance < 100) {
+          if (distance < 120) {
             ctx.beginPath()
-            ctx.strokeStyle = `rgba(123, 97, 255, ${0.1 * (1 - distance / 100)})`
+            const lineOpacity = (1 - distance / 120) * 0.15
+            if (darkMode) {
+              ctx.strokeStyle = `rgba(192, 192, 192, ${lineOpacity})`
+            } else {
+              ctx.strokeStyle = `rgba(80, 80, 80, ${lineOpacity})`
+            }
             ctx.lineWidth = 0.5
             ctx.moveTo(p.x, p.y)
             ctx.lineTo(p2.x, p2.y)
@@ -116,329 +139,149 @@ export default function Hero() {
     }
   }, [])
 
-  // Tech globe animation
-  useEffect(() => {
-    const canvas = globeCanvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-
-    canvas.width = 300
-    canvas.height = 300
-
-    const centerX = canvas.width / 2
-    const centerY = canvas.height / 2
-    const radius = 100
-
-    // Create points on a sphere
-    const points: {
-      x3d: number
-      y3d: number
-      z3d: number
-      x2d: number
-      y2d: number
-      size: number
-      color: string
-      text: string
-      opacity: number
-    }[] = []
-
-    // Create points distributed on a sphere
-    for (let i = 0; i < 100; i++) {
-      // Use spherical coordinates to distribute points evenly
-      const phi = Math.acos(-1 + (2 * i) / 100)
-      const theta = Math.sqrt(100 * Math.PI) * phi
-
-      // Convert to Cartesian coordinates
-      const x = radius * Math.sin(phi) * Math.cos(theta)
-      const y = radius * Math.sin(phi) * Math.sin(theta)
-      const z = radius * Math.cos(phi)
-
-      // Assign a random tech logo to some points
-      const logoIndex = i % techLogos.length
-      const logo = techLogos[logoIndex]
-
-      points.push({
-        x3d: x,
-        y3d: y,
-        z3d: z,
-        x2d: 0,
-        y2d: 0,
-        size: Math.random() * 3 + 2,
-        color: logo.color,
-        text: logo.name,
-        opacity: 0.7,
-      })
-    }
-
-    let angleX = 0
-    let angleY = 0
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      // Rotate the sphere
-      angleX += 0.003
-      angleY += 0.002
-
-      // Update 3D points and project to 2D
-      for (const point of points) {
-        // Apply rotation around Y axis
-        const cosY = Math.cos(angleY)
-        const sinY = Math.sin(angleY)
-
-        const x1 = point.x3d * cosY - point.z3d * sinY
-        const z1 = point.z3d * cosY + point.x3d * sinY
-
-        // Apply rotation around X axis
-        const cosX = Math.cos(angleX)
-        const sinX = Math.sin(angleX)
-
-        const y2 = point.y3d * cosX - z1 * sinX
-        const z2 = z1 * cosX + point.y3d * sinX
-
-        // Project 3D to 2D
-        const scale = 400 / (400 + z2)
-        point.x2d = centerX + x1 * scale
-        point.y2d = centerY + y2 * scale
-
-        // Adjust opacity based on z position (depth)
-        point.opacity = (z2 + radius) / (2 * radius)
-      }
-
-      // Sort points by z-coordinate for proper rendering (back to front)
-      points.sort((a, b) => a.z3d - b.z3d)
-
-      // Draw connections between close points
-      ctx.strokeStyle = "rgba(123, 97, 255, 0.15)"
-      ctx.lineWidth = 0.5
-
-      for (let i = 0; i < points.length; i++) {
-        for (let j = i + 1; j < points.length; j++) {
-          const dx = points[i].x2d - points[j].x2d
-          const dy = points[i].y2d - points[j].y2d
-          const distance = Math.sqrt(dx * dx + dy * dy)
-
-          if (distance < 50) {
-            ctx.beginPath()
-            ctx.moveTo(points[i].x2d, points[i].y2d)
-            ctx.lineTo(points[j].x2d, points[j].y2d)
-            ctx.stroke()
-          }
-        }
-      }
-
-      // Draw points
-      for (const point of points) {
-        // Draw point
-        ctx.fillStyle = `rgba(${hexToRgb(point.color)}, ${point.opacity})`
-        ctx.beginPath()
-        ctx.arc(point.x2d, point.y2d, point.size * point.opacity, 0, Math.PI * 2)
-        ctx.fill()
-
-        // Draw tech name for larger points in the front
-        if (point.z3d > 50 && Math.random() > 0.95) {
-          ctx.fillStyle = `rgba(${hexToRgb(point.color)}, ${point.opacity})`
-          ctx.font = `${Math.floor(10 * point.opacity)}px Arial`
-          ctx.textAlign = "center"
-          ctx.fillText(point.text, point.x2d, point.y2d - 10)
-        }
-      }
-
-      requestAnimationFrame(animate)
-    }
-
-    animate()
-
-    // Helper function to convert hex to rgb
-    function hexToRgb(hex: string) {
-      // Remove # if present
-      hex = hex.replace("#", "")
-
-      // Parse the hex values
-      const r = Number.parseInt(hex.substring(0, 2), 16) || 0
-      const g = Number.parseInt(hex.substring(2, 4), 16) || 0
-      const b = Number.parseInt(hex.substring(4, 6), 16) || 0
-
-      return `${r}, ${g}, ${b}`
-    }
-
-    return () => {
-      // Cleanup if needed
-    }
-  }, [mounted])
-
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:bg-gradient-to-br dark:from-black dark:via-gray-900 dark:to-black"
     >
+      {/* Animated background gradient */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0.03),transparent_50%)] dark:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03),transparent_50%)]" />
+      <div 
+        className="absolute inset-0 opacity-70 dark:opacity-20"
+        style={{
+          background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(192, 192, 192, 0.2), transparent 50%)`
+        }}
+      />
+      
+      {/* Particle canvas */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none z-0 hero-mask"
+        className="absolute inset-0 w-full h-full pointer-events-none z-0"
       />
+
+      {/* Decorative elements */}
+      <div className="absolute top-20 left-10 w-64 h-64 bg-gray-400/10 dark:bg-white/5 rounded-full blur-3xl animate-float" />
+      <div className="absolute bottom-20 right-10 w-96 h-96 bg-gray-500/10 dark:bg-gray-400/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '1s' }} />
+
       <div className="container mx-auto px-4 z-10 py-20 md:py-32">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+        <div className="max-w-5xl mx-auto">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col space-y-6"
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-col items-center text-center space-y-8"
           >
-            <div className="space-y-2">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-              >
-                <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                  Software Engineer
-                </span>
-              </motion.div>
+            {/* Elegant badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full glass-morphism border border-gray-300/30 dark:border-white/10"
+            >
+              <Sparkles className="w-4 h-4 text-gray-600 dark:text-gray-300" />
+              <span className="text-sm font-crimson tracking-wider text-gray-600 dark:text-gray-300 uppercase">
+                Software Engineer
+              </span>
+            </motion.div>
+
+            {/* Main heading with elegant typography */}
+            <div className="space-y-4">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight"
+                transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                className="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold tracking-tight"
               >
-                Hi, I&apos;m{" "}
-                <span className="text-gradient">
+                <span className="text-black dark:text-white">Hello, I'm </span>
+                <br />
+                <span className="bg-gradient-to-r from-gray-700 via-gray-500 to-gray-700 dark:from-gray-300 dark:via-white dark:to-gray-300 bg-clip-text text-transparent inline-block mt-2">
                   {mounted && (
                     <TypeAnimation
                       sequence={[
                         "Tanmay Bansal",
-                        2000,
+                        3000,
                         "a Developer",
-                        1000,
-                        "a Software Engineer",
-                        1000,
+                        1500,
                         "a Creator",
-                        1000,
-                        "an AI/ML Enthusiast",
-                        1000,
+                        1500,
+                        "an Innovator",
+                        1500,
                         "Tanmay Bansal",
                         5000,
                       ]}
                       wrapper="span"
                       speed={50}
-                      repeat={Number.POSITIVE_INFINITY}
+                      repeat={Infinity}
                     />
                   )}
                 </span>
               </motion.h1>
+
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="text-xl md:text-2xl text-muted-foreground mt-4"
+                transition={{ duration: 1, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                className="text-xl md:text-2xl lg:text-3xl font-crimson text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed"
               >
-                Building innovative web applications with modern technologies
+                Crafting exceptional digital experiences with{" "}
+                <span className="text-gray-900 dark:text-gray-200 font-medium italic">elegance</span> and{" "}
+                <span className="text-gray-900 dark:text-gray-200 font-medium italic">precision</span>
               </motion.p>
             </div>
 
+            {/* CTA buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="flex flex-wrap gap-4"
+              transition={{ duration: 1, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="flex flex-wrap gap-4 justify-center pt-4"
             >
-              <Button asChild size="lg" className="rounded-full">
+              <Button 
+                asChild 
+                size="lg" 
+                className="rounded-full bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-all duration-300 px-8 py-6 text-base font-crimson font-medium shadow-lg hover:shadow-2xl hover:shadow-black/20 dark:hover:shadow-white/20 group"
+              >
                 <Link href="#projects">
-                  View My Work <ArrowRight className="ml-2 h-4 w-4" />
+                  <span>Explore My Work</span>
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </Button>
               <Button
                 asChild
                 variant="outline"
                 size="lg"
-                className="rounded-full"
-              >
-                <Link href="#contact">Contact Me</Link>
-              </Button>
-              <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="rounded-full"
+                className="rounded-full border-2 border-gray-300 dark:border-white/20 bg-transparent text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 px-8 py-6 text-base font-crimson font-medium"
               >
                 <Link
                   href="https://drive.google.com/file/d/1XHREvJwu8655Ssfi7yqv5--zVUuE6FLL/view?usp=drive_link"
                   target="_blank"
                 >
-                  <DownloadCloudIcon className="h-4 w-4" /> Resume
+                  <DownloadCloudIcon className="mr-2 h-5 w-5" /> 
+                  <span>Download Resume</span>
                 </Link>
               </Button>
             </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              className="flex space-x-4 pt-4"
-            >
-              <Link
-                href="https://github.com/TanmayBansa1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Github className="h-6 w-6" />
-                <span className="sr-only">GitHub</span>
-              </Link>
-              <Link
-                href="https://www.linkedin.com/in/tanmay-bansal-40bb44199/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Linkedin className="h-6 w-6" />
-                <span className="sr-only">LinkedIn</span>
-              </Link>
-              <Link
-                href="https://x.com/K_A_I11"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Twitter className="h-6 w-6" />
-                <span className="sr-only">Twitter</span>
-              </Link>
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="relative hidden md:block"
-          >
-            <div className="relative w-full h-[400px]">
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative w-64 h-64 animate-float">
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 blur-md opacity-70" />
-                  <div className="absolute inset-2 rounded-full bg-background flex items-center justify-center overflow-hidden">
-                    <canvas
-                      ref={globeCanvasRef}
-                      className="w-full h-full pointer-events-none z-0"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
           </motion.div>
         </div>
       </div>
 
-      <Link
-        href="#projects"
-        className="absolute bottom-24 left-1/2 transform -translate-x-1/2 animate-bounce"
+      {/* Elegant scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5, duration: 1 }}
+        className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
       >
-        <div className="w-6 h-10 rounded-full border-2 border-muted-foreground flex justify-center items-start p-1">
-          <div className="w-1 h-2 bg-muted-foreground rounded-full animate-pulse" />
-        </div>
-      </Link>
+        <Link href="#projects">
+          <div className="w-[30px] h-[50px] rounded-full border-2 border-gray-400 dark:border-white/20 flex justify-center items-start p-2">
+            <motion.div
+              animate={{ y: [0, 12, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="w-1.5 h-1.5 bg-gray-700 dark:bg-white rounded-full"
+            />
+          </div>
+        </Link>
+      </motion.div>
     </section>
   );
 }

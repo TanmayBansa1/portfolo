@@ -26,35 +26,35 @@ export default function Navbar() {
       title: "Home",
       href: "/",
       icon: (
-        <Home className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <Home className="h-full w-full text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors" />
       ),
     },
     {
       title: "About",
       href: "/about",
       icon: (
-        <User2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <User2 className="h-full w-full text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors" />
       ),
     },
     {
       title: "Projects",
       href: "/#projects",
       icon: (
-        <Briefcase className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <Briefcase className="h-full w-full text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors" />
       ),
     },
     {
       title: "Skills",
       href: "/#skills",
       icon: (
-        <Code className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <Code className="h-full w-full text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors" />
       ),
     },
     {
       title: "Contact",
       href: "/#contact",
       icon: (
-        <Mail className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <Mail className="h-full w-full text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors" />
       ),
     },
     { title: "Toggle Theme", icon: <ModeToggle /> },
@@ -62,7 +62,7 @@ export default function Navbar() {
       title: "Github",
       href: "https://github.com/TanmayBansa1",
       icon: (
-        <Github className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <Github className="h-full w-full text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors" />
       ),
       target: "_blank",
     },
@@ -70,7 +70,7 @@ export default function Navbar() {
       title: "LinkedIn",
       href: "https://www.linkedin.com/in/tanmay-bansal-40bb44199/",
       icon: (
-        <Linkedin className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <Linkedin className="h-full w-full text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors" />
       ),
       target: "_blank",
     },
@@ -78,7 +78,7 @@ export default function Navbar() {
       title: "X",
       href: "https://x.com/K_A_I11",
       icon: (
-        <Twitter className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <Twitter className="h-full w-full text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors" />
       ),
       target: "_blank",
     },
@@ -87,7 +87,7 @@ export default function Navbar() {
       href: "https://drive.google.com/file/d/1XHREvJwu8655Ssfi7yqv5--zVUuE6FLL/view?usp=drive_link",
       target: "_blank",
       icon: (
-        <DownloadCloud className="h-full w-full text-neutral-500 dark:text-neutral-300"></DownloadCloud>
+        <DownloadCloud className="h-full w-full text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors"></DownloadCloud>
       ),
     },
     {
@@ -95,7 +95,7 @@ export default function Navbar() {
       href: "https://medium.com/@tanmay.bansal20",
       target: "_blank",
       icon: (
-        <Pencil className="h-full w-full text-neutral-500 dark:text-neutral-300"></Pencil>
+        <Pencil className="h-full w-full text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors"></Pencil>
       ),
     },
   ];
