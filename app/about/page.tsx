@@ -193,7 +193,7 @@ export default function AboutPage() {
             >
               <h2 className="text-2xl md:text-3xl font-bold mb-4">Experience</h2>
               <div className="h-1 w-20 bg-primary mx-auto mb-6 md:mb-8 rounded-full" />
-              <p className="text-sm md:text-base text-muted-foreground">My professional journey in the world of web development.</p>
+              <p className="text-sm md:text-base text-muted-foreground">My professional journey.</p>
             </motion.div>
 
             <div className="relative">

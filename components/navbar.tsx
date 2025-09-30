@@ -1,25 +1,36 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { ModeToggle } from "@/components/mode-toggle"
-import { Briefcase, Code, DownloadCloud, Github, Home, Linkedin, Mail, Pencil, Twitter, User2 } from "lucide-react"
-import { FloatingDock } from "./ui/floating-dock"
+import { useState, useEffect } from "react";
+import { ModeToggle } from "@/components/mode-toggle";
+import {
+  Briefcase,
+  Code,
+  DownloadCloud,
+  Github,
+  Home,
+  Linkedin,
+  Mail,
+  Pencil,
+  Twitter,
+  User2,
+} from "lucide-react";
+import { FloatingDock } from "./ui/floating-dock";
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false)
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 10) {
-        setIsScrolled(true)
+        setIsScrolled(true);
       } else {
-        setIsScrolled(false)
+        setIsScrolled(false);
       }
-    }
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinks = [
     {
@@ -102,10 +113,7 @@ export default function Navbar() {
 
   return (
     <div className="flex fixed bottom-5 justify-center w-full z-50">
-      <FloatingDock
-        mobileClassName="ml-auto pr-2 mr-4 pb-2"
-        items={navLinks}
-      />
+      <FloatingDock mobileClassName="ml-auto pr-2 mr-4 pb-2" items={navLinks} />
     </div>
-  )
+  );
 }
