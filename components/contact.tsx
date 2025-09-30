@@ -2,16 +2,17 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { useInView } from "react-intersection-observer"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
-import { Mail, MapPin, Phone, Send } from "lucide-react"
+import { Mail, MapPin, Phone, Send, CheckCircle2 } from "lucide-react"
 import sendMessage from "@/lib/mailtrap"
 import {toast} from "sonner"
+
 export default function Contact() {
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -26,6 +27,15 @@ export default function Contact() {
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -36,7 +46,6 @@ export default function Contact() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate form submission
     const result = await sendMessage({
       message: {
         email: formData.email,
@@ -63,84 +72,126 @@ export default function Contact() {
 
   const contactInfo = [
     {
-      icon: <Mail className="h-5 w-5" />,
+      icon: Mail,
       title: "Email",
       value: "tanmaybansal.20@gmail.com",
       link: "https://mail.google.com/mail/?view=cm&to=tanmaybansal.20@gmail.com",
     },
     {
-      icon: <MapPin className="h-5 w-5" />,
+      icon: MapPin,
       title: "Location",
       value: "Delhi, India",
     },
     {
-      icon: <Phone className="h-5 w-5" />,
+      icon: Phone,
       title: "Phone",
       value: "+91 8742921973",
-      link: "tel:+919876543210",
+      link: "tel:+918742921973",
     },
   ]
 
   return (
-      <div className="relative h-full w-full  bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]  dark:bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] dark:bg-[size:14px_24px]">
-    <section id="contact" className="py-20 md:py-32 bg-[radial-gradient(circle_800px_at_100%_200px,#d5c5ff,transparent)]  dark:bg-[radial-gradient(circle_400px_at_50%_300px,#fbfbfb36,#000)]" ref={ref}>
+    <section id="contact" className="py-24 md:py-32 bg-gradient-to-b from-gray-100 via-white to-gray-100 dark:bg-gradient-to-b dark:from-black dark:via-gray-950 dark:to-black relative overflow-hidden" ref={ref}>
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,0,0.02),transparent_70%)] dark:bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.03),transparent_70%)]" />
+      <div className="absolute top-0 left-0 w-96 h-96 bg-gray-300/10 dark:bg-white/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gray-400/10 dark:bg-gray-400/5 rounded-full blur-3xl" />
+      <div 
+        className="absolute inset-0 opacity-20 dark:opacity-40 pointer-events-none"
+        style={{
+          background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(192, 192, 192, 0.2), transparent 50%)`
+        }}
+      />
 
-
-      <div className="container mx-auto px-4  ">
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-3xl mx-auto text-center mb-16"
-          >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Get In Touch</h2>
-          <div className="h-1 w-20 bg-primary mx-auto mb-8 rounded-full" />
-          <p className="text-muted-foreground">
-            Have a project in mind or want to collaborate? Feel free to reach out to me using the form below.
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-4xl mx-auto text-center mb-20"
+        >
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold mb-6 text-black dark:text-white">
+            Let's <span className="bg-gradient-to-r from-gray-700 via-gray-500 to-gray-700 dark:from-gray-300 dark:via-white dark:to-gray-300 bg-clip-text text-transparent italic">Connect</span>
+          </h2>
+          <div className="h-[2px] w-32 bg-gradient-to-r from-transparent via-gray-500 dark:via-gray-400 to-transparent mx-auto mb-8" />
+          <p className="text-lg md:text-xl font-crimson text-gray-600 dark:text-gray-400 leading-relaxed">
+            Have a project in mind or want to collaborate? I'd love to hear from you.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Contact Info Cards */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -30 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-1 space-y-6"
-            >
+          >
             {contactInfo.map((info, index) => (
-              <Card key={index} className="overflow-hidden">
-                <CardContent className="p-6 flex items-start space-x-4">
-                  <div className="bg-primary/10 p-3 rounded-full text-primary">{info.icon}</div>
-                  <div>
-                    <h3 className="font-medium">{info.title}</h3>
-                    {info.link ? (
-                      <a href={info.link} target="_blank"  className="text-muted-foreground hover:text-primary transition-colors">
-                        {info.value}
-                      </a>
-                    ) : (
-                      <p className="text-muted-foreground">{info.value}</p>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
+              <motion.div
+                key={info.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{ duration: 0.6, delay: 0.3 + index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <Card className="overflow-hidden border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/50 backdrop-blur-sm hover:border-gray-400 dark:hover:border-gray-700 transition-all duration-300 group">
+                  <CardContent className="p-6 flex items-start gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-300 to-gray-400 dark:from-gray-800 dark:to-gray-700 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <info.icon className="h-5 w-5 text-gray-800 dark:text-gray-300" />
+                      </div>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-playfair font-semibold text-black dark:text-white mb-1 text-lg">
+                        {info.title}
+                      </h3>
+                      {info.link ? (
+                        <a 
+                          href={info.link} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="font-crimson text-gray-600 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors text-sm block"
+                        >
+                          {info.value}
+                        </a>
+                      ) : (
+                        <p className="font-crimson text-gray-600 dark:text-gray-400 text-sm">{info.value}</p>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
+
+            {/* Decorative quote */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.6, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="p-6 rounded-xl border border-gray-200 dark:border-gray-800 bg-gradient-to-br from-white to-gray-50 dark:from-gray-950/50 dark:to-black/50 backdrop-blur-sm"
+            >
+              <p className="font-cinzel text-lg text-gray-600 dark:text-gray-400 italic leading-relaxed">
+                "Great things are built through collaboration and vision."
+              </p>
+            </motion.div>
           </motion.div>
 
+          {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 30 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="lg:col-span-2"
-            >
-            <Card>
-              <CardContent className="p-6">
+          >
+            <Card className="border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950/50 backdrop-blur-sm overflow-hidden">
+              <CardContent className="p-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <label
                         htmlFor="name"
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
+                        className="text-sm font-crimson font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
+                      >
                         Name
                       </label>
                       <Input
@@ -150,13 +201,14 @@ export default function Contact() {
                         onChange={handleChange}
                         placeholder="Your name"
                         required
-                        />
+                        className="bg-gray-50 dark:bg-black/50 border-gray-200 dark:border-gray-800 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-600 focus:border-gray-400 dark:focus:border-gray-600 font-crimson"
+                      />
                     </div>
                     <div className="space-y-2">
                       <label
                         htmlFor="email"
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
+                        className="text-sm font-crimson font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
+                      >
                         Email
                       </label>
                       <Input
@@ -165,16 +217,17 @@ export default function Contact() {
                         type="email"
                         value={formData.email}
                         onChange={handleChange}
-                        placeholder="Your email"
+                        placeholder="your.email@example.com"
                         required
-                        />
+                        className="bg-gray-50 dark:bg-black/50 border-gray-200 dark:border-gray-800 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-600 focus:border-gray-400 dark:focus:border-gray-600 font-crimson"
+                      />
                     </div>
                   </div>
                   <div className="space-y-2">
                     <label
                       htmlFor="subject"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
+                      className="text-sm font-crimson font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
+                    >
                       Subject
                     </label>
                     <Input
@@ -182,15 +235,16 @@ export default function Contact() {
                       name="subject"
                       value={formData.subject}
                       onChange={handleChange}
-                      placeholder="Subject"
+                      placeholder="What's this about?"
                       required
-                      />
+                      className="bg-gray-50 dark:bg-black/50 border-gray-200 dark:border-gray-800 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-600 focus:border-gray-400 dark:focus:border-gray-600 font-crimson"
+                    />
                   </div>
                   <div className="space-y-2">
                     <label
                       htmlFor="message"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
+                      className="text-sm font-crimson font-medium text-gray-700 dark:text-gray-300 uppercase tracking-wider"
+                    >
                       Message
                     </label>
                     <Textarea
@@ -198,16 +252,21 @@ export default function Contact() {
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Your message"
-                      rows={5}
+                      placeholder="Tell me about your project or idea..."
+                      rows={6}
                       required
-                      />
+                      className="bg-gray-50 dark:bg-black/50 border-gray-200 dark:border-gray-800 text-black dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-600 focus:border-gray-400 dark:focus:border-gray-600 font-crimson resize-none"
+                    />
                   </div>
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-all duration-300 py-6 text-base font-crimson font-medium shadow-lg hover:shadow-2xl hover:shadow-black/10 dark:hover:shadow-white/10 group" 
+                    disabled={isSubmitting}
+                  >
                     {isSubmitting ? (
-                      <span className="flex items-center">
+                      <span className="flex items-center justify-center">
                         <svg
-                          className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                          className="animate-spin -ml-1 mr-3 h-5 w-5"
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -219,18 +278,19 @@ export default function Contact() {
                             r="10"
                             stroke="currentColor"
                             strokeWidth="4"
-                            ></circle>
+                          ></circle>
                           <path
                             className="opacity-75"
                             fill="currentColor"
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            ></path>
+                          ></path>
                         </svg>
-                        Sending...
+                        Sending your message...
                       </span>
                     ) : (
-                      <span className="flex items-center">
-                        <Send className="mr-2 h-4 w-4" /> Send Message
+                      <span className="flex items-center justify-center">
+                        <Send className="mr-2 h-5 w-5 group-hover:translate-x-1 transition-transform" /> 
+                        Send Message
                       </span>
                     )}
                   </Button>
@@ -241,6 +301,5 @@ export default function Contact() {
         </div>
       </div>
     </section>
-                    </div>
   )
 }
