@@ -28,8 +28,8 @@ export default function Projects() {
   const [isPaused, setIsPaused] = useState(false)
   const containerRef = useRef<HTMLDivElement>(null)
   const [isMobile, setIsMobile] = useState(false)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
-  // Check if mobile on mount and resize
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768)
@@ -39,13 +39,20 @@ export default function Projects() {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
-  // Define the original projects
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY })
+    }
+    window.addEventListener('mousemove', handleMouseMove)
+    return () => window.removeEventListener('mousemove', handleMouseMove)
+  }, [])
+
   const originalProjects: Project[] = [
     {
       id: 0,
       title: "SunoAI",
       description:
-        "I built a ResNet-inspired model that listens to sounds, turns them into spectrograms, and classifies them across 50 categories",
+        "A ResNet-inspired model that listens to sounds, transforms them into spectrograms, and classifies them across 50 categories with precision.",
       technologies: [
         "CNN",
         "ML",
@@ -67,7 +74,7 @@ export default function Projects() {
       id: 1,
       title: "GenInvoice",
       description:
-        "A web application designed to streamline invoice generation and management.",
+        "A sophisticated web application designed to streamline invoice generation and management with elegant automation.",
       technologies: [
         "NextJS",
         "TypeScript",
@@ -86,7 +93,7 @@ export default function Projects() {
       id: 2,
       title: "ReplSage",
       description:
-        "An innovative web application designed to streamline project collaboration, knowledge management, and AI-assisted development.",
+        "An innovative platform designed to revolutionize project collaboration, knowledge management, and AI-assisted development.",
       technologies: [
         "TypeScript",
         "NextJS",
@@ -108,7 +115,7 @@ export default function Projects() {
       id: 3,
       title: "Miseit",
       description:
-        "A robust and intuitive storage application designed to streamline organization and management of files with a seamless experience.",
+        "A robust and intuitive storage application designed to streamline organization and file management with seamless experience.",
       technologies: [
         "TypeScript",
         "NextJS",
@@ -124,7 +131,7 @@ export default function Projects() {
       id: 4,
       title: "Payme-App-v2",
       description:
-        "A modern digital wallet application featuring real-time transactions, authentication, and a clean UI.",
+        "A modern digital wallet application featuring real-time transactions, secure authentication, and a pristine interface.",
       technologies: [
         "TypeScript",
         "React",
@@ -144,7 +151,7 @@ export default function Projects() {
       id: 5,
       title: "Quillcraft",
       description:
-        "A blogging platform for people around the world to share their thoughts and stories.",
+        "An elegant blogging platform for creators worldwide to share their thoughts, stories, and insights with the world.",
       technologies: [
         "TypeScript",
         "React",
@@ -161,7 +168,7 @@ export default function Projects() {
       id: 6,
       title: "Muzix",
       description:
-        "A website designed for an online music academy to provide an exceptional learning experience for music enthusiasts.",
+        "A beautifully crafted website for an online music academy, providing an exceptional learning experience for music enthusiasts.",
       technologies: ["TypeScript", "NextJS", "Acertinity UI"],
       github: "https://github.com/TanmayBansa1/Muzix",
       image: "/muzix.png",
@@ -169,20 +176,16 @@ export default function Projects() {
     },
   ];
 
-  // Duplicate projects for seamless looping
   const projects = [...originalProjects, ...originalProjects]
 
-  // Calculate card width (including margin)
-  const CARD_WIDTH = 400 + 24 // Increased from 350px to 400px + mx-3 (12px each side)
+  const CARD_WIDTH = 420 + 24
   const TOTAL_WIDTH = CARD_WIDTH * originalProjects.length
 
-  // Animation controls for desktop
   const controls = useAnimation()
   const x = useMotionValue(0)
-  const springConfig = { damping: 20, stiffness: 100, mass: 0.5 }
+  const springConfig = { damping: 25, stiffness: 120, mass: 0.5 }
   const xSpring = useSpring(x, springConfig)
 
-  // Start the animation for desktop
   useEffect(() => {
     if (!inView || isMobile) return
     let frame: number
@@ -191,7 +194,7 @@ export default function Projects() {
       if (!isPaused) {
         const elapsed = now - lastTime
         lastTime = now
-        x.set(x.get() - (elapsed * 0.05)) // Slower speed for smoother animation
+        x.set(x.get() - (elapsed * 0.04))
         if (Math.abs(x.get()) >= TOTAL_WIDTH) {
           x.set(0)
         }
@@ -204,11 +207,10 @@ export default function Projects() {
     return () => cancelAnimationFrame(frame)
   }, [isPaused, inView, TOTAL_WIDTH, isMobile])
 
-  // Fade in/out based on card position (desktop only)
   function getOpacity(cardIndex: number) {
     if (isMobile) return 1
     const leftEdge = -xSpring.get() + cardIndex * CARD_WIDTH
-    const fadeWidth = 200 // Increased fade width for smoother transition
+    const fadeWidth = 250
     if (leftEdge < fadeWidth) {
       return Math.max(0, leftEdge / fadeWidth)
     } else if (leftEdge > TOTAL_WIDTH - fadeWidth) {
@@ -217,32 +219,41 @@ export default function Projects() {
     return 1
   }
 
-  // Scale based on position for 3D effect
   function getScale(cardIndex: number) {
     if (isMobile) return 1
     const leftEdge = -xSpring.get() + cardIndex * CARD_WIDTH
     const center = TOTAL_WIDTH / 2
     const distanceFromCenter = Math.abs(leftEdge - center)
     const maxDistance = TOTAL_WIDTH / 2
-    const scale = 1 - (distanceFromCenter / maxDistance) * 0.1
-    return Math.max(0.9, scale)
+    const scale = 1 - (distanceFromCenter / maxDistance) * 0.08
+    return Math.max(0.92, scale)
   }
 
   return (
-    <section id="projects" className="py-20 md:py-32 bg-[radial-gradient(circle_farthest-side,rgba(177,156,217,.35),rgba(255,255,255,0))]
-    dark:bg-[radial-gradient(circle_farthest-side,rgba(255,0,182,.15),rgba(255,255,255,0))]" ref={ref}>
-      <div className="container mx-auto px-4">
+    <section id="projects" className="py-24 md:py-32 bg-gradient-to-b from-white via-gray-50 to-white dark:bg-gradient-to-b dark:from-black dark:via-gray-950 dark:to-black relative overflow-hidden" ref={ref}>
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(0,0,0,0.03),transparent_50%)] dark:bg-[radial-gradient(circle_at_30%_20%,rgba(192,192,192,0.05),transparent_50%)]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(0,0,0,0.03),transparent_50%)] dark:bg-[radial-gradient(circle_at_70%_80%,rgba(128,128,128,0.05),transparent_50%)]" />
+      <div 
+        className="absolute inset-0 opacity-70 dark:opacity-30 pointer-events-none"
+        style={{
+          background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(192, 192, 192, 0.2), transparent 50%)`
+        }}
+      />
+      
+      <div className="container mx-auto px-4 relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-3xl mx-auto text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-4xl mx-auto text-center mb-20"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">My Work</h2>
-          <div className="h-1 w-20 bg-primary mx-auto mb-8 rounded-full" />
-          <p className="text-muted-foreground">
-            Here are some of the projects I&apos;ve worked on. Each project represents a unique challenge and learning
-            experience.
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-playfair font-bold mb-6 text-black dark:text-white">
+            Featured <span className="bg-gradient-to-r from-gray-700 via-gray-500 to-gray-700 dark:from-gray-300 dark:via-white dark:to-gray-300 bg-clip-text text-transparent italic">Work</span>
+          </h2>
+          <div className="h-[2px] w-32 bg-gradient-to-r from-transparent via-gray-500 dark:via-gray-400 to-transparent mx-auto mb-8" />
+          <p className="text-lg md:text-xl font-crimson text-gray-600 dark:text-gray-400 leading-relaxed">
+            A curated collection of projects that showcase innovation, craftsmanship, and attention to detail.
           </p>
         </motion.div>
 
@@ -254,9 +265,9 @@ export default function Projects() {
             onMouseEnter={() => setIsPaused(true)}
             onMouseLeave={() => setIsPaused(false)}
           >
-            <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10"></div>
-            <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent z-10"></div>
-            <div ref={containerRef} className="flex overflow-hidden py-8">
+            <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white dark:from-black to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white dark:from-black to-transparent z-10 pointer-events-none"></div>
+            <div ref={containerRef} className="flex overflow-hidden py-10">
               <motion.div
                 className="flex"
                 style={{ x: xSpring }}
@@ -265,47 +276,64 @@ export default function Projects() {
                 {projects.map((project, index) => (
                   <motion.div
                     key={`${project.id}-${index}`}
-                    className="flex-shrink-0 w-[400px] mx-3"
+                    className="flex-shrink-0 w-[420px] mx-3"
                     style={{ 
                       opacity: getOpacity(index),
                       scale: getScale(index),
                     }}
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                    whileHover={{ 
-                      scale: 1.05,
-                      zIndex: 20,
-                      transition: { duration: 0.2 }
-                    }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
                   >
-                    <Card className="h-[500px] flex flex-col overflow-hidden group hover:shadow-xl transition-all duration-300 border">
-                      <div className="relative h-[200px] overflow-hidden">
+                    <Card className="h-[560px] flex flex-col overflow-hidden group border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 hover:shadow-2xl hover:shadow-black/10 dark:hover:shadow-white/5 transition-all duration-500">
+                      <div className="relative h-[220px] overflow-hidden bg-gray-50 dark:bg-gray-900">
                         <motion.img
                           src={project.image || "/placeholder.svg"}
                           alt={project.title}
                           className="w-full h-full object-cover"
-                          whileHover={{ scale: 1.1 }}
-                          transition={{ duration: 0.3 }}
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                         />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       </div>
-                      <CardHeader className="flex-none min-h-[100px]">
-                        <CardTitle className="line-clamp-1">{project.title}</CardTitle>
-                        <CardDescription className="line-clamp-3">{project.description}</CardDescription>
+                      <CardHeader className="flex-none min-h-[120px] pb-3">
+                        <CardTitle className="text-2xl font-playfair font-semibold text-black dark:text-white line-clamp-1">
+                          {project.title}
+                        </CardTitle>
+                        <CardDescription className="font-crimson text-gray-600 dark:text-gray-400 line-clamp-3 leading-relaxed">
+                          {project.description}
+                        </CardDescription>
                       </CardHeader>
-                      <CardContent className="flex-grow min-h-[100px]">
+                      <CardContent className="flex-grow min-h-[110px]">
                         <div className="flex flex-wrap gap-2">
-                          {project.technologies.map((tech) => (
-                            <Badge key={tech} variant="secondary">
+                          {project.technologies.slice(0, 6).map((tech) => (
+                            <Badge 
+                              key={tech} 
+                              variant="secondary"
+                              className="bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-800 font-crimson font-medium"
+                            >
                               {tech}
                             </Badge>
                           ))}
+                          {project.technologies.length > 6 && (
+                            <Badge 
+                              variant="secondary"
+                              className="bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-800 font-crimson font-medium"
+                            >
+                              +{project.technologies.length - 6}
+                            </Badge>
+                          )}
                         </div>
                       </CardContent>
-                      <CardFooter className="flex-none h-[50px]">
-                        <div className="flex gap-2 w-full">
+                      <CardFooter className="flex-none h-[60px] pt-0">
+                        <div className="flex gap-3 w-full">
                           {project.github && (
-                            <Button asChild variant="outline" size="sm" className="flex-1">
+                            <Button 
+                              asChild 
+                              variant="outline" 
+                              size="sm" 
+                              className="flex-1 border-gray-300 dark:border-gray-700 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 font-crimson"
+                            >
                               <Link href={project.github} target="_blank" rel="noopener noreferrer">
                                 <Github className="mr-2 h-4 w-4" />
                                 Code
@@ -313,7 +341,11 @@ export default function Projects() {
                             </Button>
                           )}
                           {project.live && (
-                            <Button asChild size="sm" className="flex-1">
+                            <Button 
+                              asChild 
+                              size="sm" 
+                              className="flex-1 bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200 transition-all duration-300 font-crimson"
+                            >
                               <Link href={project.live} target="_blank" rel="noopener noreferrer">
                                 <ExternalLink className="mr-2 h-4 w-4" />
                                 Live
