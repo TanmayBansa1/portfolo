@@ -29,10 +29,24 @@ const cinzel = Cinzel({
 
 export const metadata: Metadata = {
   title: "Tanmay Bansal | Portfolio",
-  description: "Full-stack developer portfolio showcasing projects and skills",
+  description: "Software Engineer portfolio showcasing projects and skills",
   icons: {
     icon: "/favicon.ico",
-  }
+  },
+  openGraph: {
+    title: "Tanmay Bansal | Portfolio",
+    description: "Software Engineer portfolio showcasing projects and skills",
+    url: "https://tanmay.space",
+    siteName: "Tanmay Bansal Portfolio",
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Tanmay Bansal | Portfolio",
+    description: "Software Engineer portfolio showcasing projects and skills",
+  },
+  metadataBase: new URL("https://tanmay.space"),
 }
 
 export default function RootLayout({
