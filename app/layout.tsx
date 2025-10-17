@@ -1,53 +1,37 @@
 import type React from "react"
-import type { Metadata } from "next"
 import { Playfair_Display, Crimson_Pro, Cinzel } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "sonner"
-import {Analytics} from "@vercel/analytics/react"
+import { Analytics } from "@vercel/analytics/react"
+import { constructMetadata } from "@/lib/metadata"
+import { baseStructuredData } from "@/lib/structured-data"
 
 const playfair = Playfair_Display({ 
   subsets: ["latin"],
   variable: '--font-playfair',
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800', '900']
+  weight: ['400', '500', '600', '700', '800', '900'],
+  preload: true,
 })
 
 const crimson = Crimson_Pro({ 
   subsets: ["latin"],
   variable: '--font-crimson',
   display: 'swap',
-  weight: ['300', '400', '500', '600', '700']
+  weight: ['300', '400', '500', '600', '700'],
+  preload: true,
 })
 
 const cinzel = Cinzel({
   subsets: ["latin"],
   variable: '--font-cinzel',
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800', '900']
+  weight: ['400', '500', '600', '700', '800', '900'],
+  preload: true,
 })
 
-export const metadata: Metadata = {
-  title: "Tanmay Bansal | Portfolio",
-  description: "Software Engineer portfolio showcasing projects and skills",
-  icons: {
-    icon: "/favicon.ico",
-  },
-  openGraph: {
-    title: "Tanmay Bansal | Portfolio",
-    description: "Software Engineer portfolio showcasing projects and skills",
-    url: "https://tanmay.space",
-    siteName: "Tanmay Bansal Portfolio",
-    locale: "en_IN",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Tanmay Bansal | Portfolio",
-    description: "Software Engineer portfolio showcasing projects and skills",
-  },
-  metadataBase: new URL("https://tanmay.space"),
-}
+export const metadata = constructMetadata()
 
 export default function RootLayout({
   children,
@@ -55,7 +39,30 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning scroll-behavior="smooth">
+    <html lang="en-IN" suppressHydrationWarning scroll-behavior="smooth">
+      <head>
+        {/* Structured Data - Person */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(baseStructuredData.person),
+          }}
+        />
+        {/* Structured Data - Website */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(baseStructuredData.website),
+          }}
+        />
+        {/* Structured Data - Organization */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(baseStructuredData.organization),
+          }}
+        />
+      </head>
       <body className={`${crimson.variable} ${playfair.variable} ${cinzel.variable} ${crimson.className}`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           {children}

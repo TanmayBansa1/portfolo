@@ -5,16 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Github } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-
-interface Project {
-  title: string;
-  description: string;
-  technologies: string[];
-  github?: string;
-  live?: string;
-  image: string;
-}
+import type { Project } from "@/config/projects";
 
 interface ProjectCarouselProps {
   projects: Project[];
@@ -53,11 +46,13 @@ export function ProjectCarousel({ projects }: ProjectCarouselProps) {
             >
               <Card className="h-full flex flex-col overflow-hidden group hover:shadow-lg transition-all duration-300 border">
                 <div className="relative overflow-hidden">
-                  <div className="h-48 bg-muted overflow-hidden">
-                    <img
+                  <div className="relative h-48 bg-muted overflow-hidden">
+                    <Image
                       src={project.image || "/placeholder.svg"}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      alt={`${project.title} - ${project.description}`}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                      sizes="(max-width: 768px) 90vw, 350px"
                     />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
