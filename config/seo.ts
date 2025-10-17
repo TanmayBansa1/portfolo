@@ -1,0 +1,100 @@
+export const siteConfig = {
+  name: "Tanmay Bansal",
+  title: "Tanmay Bansal | Software Engineer Portfolio",
+  description: "Software Engineer portfolio showcasing innovative projects in AI, full-stack development, and cloud technologies. Specializing in Next.js, TypeScript, and modern web applications.",
+  url: "https://tanmay.space",
+  ogImage: "https://tanmay.space/opengraph-image.png",
+  links: {
+    github: "https://github.com/TanmayBansa1",
+    linkedin: "https://www.linkedin.com/in/tanmay-bansal-40bb44199/",
+    twitter: "https://x.com/K_A_I11",
+    medium: "https://blogs.tanmay.space",
+    email: "mailto:tanmaybansal.20@gmail.com",
+  },
+  creator: {
+    name: "Tanmay Bansal",
+    url: "https://tanmay.space",
+    email: "tanmaybansal.20@gmail.com",
+  },
+  keywords: [
+    "Tanmay Bansal",
+    "Software Engineer",
+    "Full Stack Developer",
+    "Web Developer",
+    "Next.js Developer",
+    "React Developer",
+    "TypeScript Developer",
+    "AI/ML Engineer",
+    "Portfolio",
+    "India",
+    "Machine Learning",
+    "Cloud Computing",
+    "Software Developer",
+    "Artificial Intelligence",
+    "Data Science",
+    "DevOps Engineer",
+    "MERN Stack",
+    "MERN Stack Developer",
+  ],
+} as const
+
+export const structuredData = {
+  person: {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Tanmay Bansal",
+    url: "https://tanmay.space",
+    image: "https://tanmay.space/opengraph-image.png",
+    sameAs: [
+      "https://github.com/TanmayBansa1",
+      "https://www.linkedin.com/in/tanmay-bansal-40bb44199/",
+      "https://x.com/K_A_I11",
+      "https://blogs.tanmay.space",
+    ],
+    jobTitle: "Software Engineer",
+    worksFor: {
+      "@type": "Organization",
+      name: "Freelance",
+    },
+    alumniOf: {
+      "@type": "Organization",
+      name: "Delhi Technological University", // Update this
+    },
+    knowsAbout: [
+      "Software Engineering",
+      "Web Development",
+      "Machine Learning",
+      "Cloud Computing",
+      "Full Stack Development",
+      "TypeScript",
+      "React",
+      "Next.js",
+    ],
+  },
+  website: {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Tanmay Bansal Portfolio",
+    url: "https://tanmay.space",
+    description: siteConfig.description,
+    author: {
+      "@type": "Person",
+      name: "Tanmay Bansal",
+    },
+    inLanguage: "en-IN",
+  },
+  organization: {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Tanmay Bansal",
+    url: "https://tanmay.space",
+    logo: "https://tanmay.space/opengraph-image.png",
+    sameAs: [
+      "https://github.com/TanmayBansa1",
+      "https://www.linkedin.com/in/tanmay-bansal-40bb44199/",
+      "https://x.com/K_A_I11",
+      "https://blogs.tanmay.space",
+    ],
+  },
+} as const
+
