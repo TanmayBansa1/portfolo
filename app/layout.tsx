@@ -41,6 +41,10 @@ export default function RootLayout({
   return (
     <html lang="en-IN" suppressHydrationWarning scroll-behavior="smooth">
       <head>
+        <meta
+          name="google-site-verification"
+          content="uTfF1FzhGSq0yg4JMvHGwn0RRpCH2sctkWJkXZ6tkaM"
+        />
         {/* Structured Data - Person */}
         <script
           type="application/ld+json"
@@ -63,13 +67,20 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${crimson.variable} ${playfair.variable} ${cinzel.variable} ${crimson.className}`}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
+      <body
+        className={`${crimson.variable} ${playfair.variable} ${cinzel.variable} ${crimson.className}`}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
           {children}
         </ThemeProvider>
-        <Toaster richColors/>
-        <Analytics/>
+        <Toaster richColors />
+        <Analytics />
       </body>
     </html>
-  )
+  );
 }
