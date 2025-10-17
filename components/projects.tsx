@@ -1,23 +1,15 @@
 "use client"
-import { useRef, useState, useEffect } from "react"
-import { motion, useAnimation, useMotionValue, useSpring } from "framer-motion"
+import { useState, useEffect } from "react"
+import { motion, useMotionValue } from "framer-motion"
 import { useInView } from "react-intersection-observer"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Github } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { ProjectCarousel } from "@/components/project-carousel"
-
-type Project = {
-  id: number
-  title: string
-  description: string
-  technologies: string[]
-  github?: string
-  live?: string
-  image: string
-}
+import { projects as importedProjects } from "@/config/projects"
+import { generateCollectionPageStructuredData } from "@/lib/structured-data"
 
 export default function Projects() {
   const [ref, inView] = useInView({
@@ -26,7 +18,6 @@ export default function Projects() {
   })
 
   const [isPaused, setIsPaused] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
   const [isMobile, setIsMobile] = useState(false)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
 
@@ -47,144 +38,19 @@ export default function Projects() {
     return () => window.removeEventListener('mousemove', handleMouseMove)
   }, [])
 
-  const originalProjects: Project[] = [
-    {
-      id: 0,
-      title: "SunoAI",
-      description:
-        "A ResNet-inspired model that listens to sounds, transforms them into spectrograms, and classifies them across 50 categories with precision.",
-      technologies: [
-        "CNN",
-        "ML",
-        "Python",
-        "NextJS",
-        "PyTorch",
-        "ResNet",
-        "Modal",
-        "Audio",
-        "Mel Spectrograms",
-        "ShadCN",
-      ],
-      image: "/sunoai.png",
-      github:
-        "https://github.com/TanmayBansa1/CNN-Audio-Classifier",
-      live: "https://sunoai.tanmay.space/",
-    },
-    {
-      id: 1,
-      title: "GenInvoice",
-      description:
-        "A sophisticated web application designed to streamline invoice generation and management with elegant automation.",
-      technologies: [
-        "NextJS",
-        "TypeScript",
-        "Mailtrap",
-        "Prisma",
-        "Clerk",
-        "Upstash",
-        "NeonDB",
-        "ShadCN",
-      ],
-      github: "https://github.com/TanmayBansa1/GenInvoice",
-      image: "/geninvoice.png",
-      live: "https://geninvoice.tanmay.space",
-    },
-    {
-      id: 2,
-      title: "ReplSage",
-      description:
-        "An innovative platform designed to revolutionize project collaboration, knowledge management, and AI-assisted development.",
-      technologies: [
-        "TypeScript",
-        "NextJS",
-        "LangChain",
-        "Gemini",
-        "NeonDB",
-        "Clerk",
-        "Stripe",
-        "AssemblyAI",
-        "RAG",
-        "Firebase",
-        "ShadCN",
-      ],
-      github: "https://github.com/TanmayBansa1/ReplSage",
-      image: "/replsage.png",
-      live: "https://replsage.tanmay.space/",
-    },
-    {
-      id: 3,
-      title: "Miseit",
-      description:
-        "A robust and intuitive storage application designed to streamline organization and file management with seamless experience.",
-      technologies: [
-        "TypeScript",
-        "NextJS",
-        "Cloud Storage",
-        "Appwrite",
-        "ShadCN",
-      ],
-      github: "https://github.com/TanmayBansa1/Miseit",
-      image: "/miseit.png",
-      live: "https://miseit.tanmay.space/",
-    },
-    {
-      id: 4,
-      title: "Payme-App-v2",
-      description:
-        "A modern digital wallet application featuring real-time transactions, secure authentication, and a pristine interface.",
-      technologies: [
-        "TypeScript",
-        "React",
-        "Node.js",
-        "TurboRepo",
-        "Webhooks",
-        "NextAuth",
-        "Prisma",
-        "NeonDB",
-        "ShadCN",
-      ],
-      github: "https://github.com/TanmayBansa1/Payme-App-v2",
-      image: "/payme.png",
-      live: "https://payme.tanmay.space/",
-    },
-    {
-      id: 5,
-      title: "Quillcraft",
-      description:
-        "An elegant blogging platform for creators worldwide to share their thoughts, stories, and insights with the world.",
-      technologies: [
-        "TypeScript",
-        "React",
-        "Honojs",
-        "Cloudflare Workers",
-        "Prisma",
-        "AivenDB",
-      ],
-      github: "https://github.com/TanmayBansa1/Quillcraft",
-      image: "/quillcraft.png",
-      live: "https://quillcraft.tanmay.space/",
-    },
-    {
-      id: 6,
-      title: "Muzix",
-      description:
-        "A beautifully crafted website for an online music academy, providing an exceptional learning experience for music enthusiasts.",
-      technologies: ["TypeScript", "NextJS", "Acertinity UI"],
-      github: "https://github.com/TanmayBansa1/Muzix",
-      image: "/muzix.png",
-      live: "https://muzix.tanmay.space/",
-    },
-  ];
+  const originalProjects = importedProjects
 
-  const projects = [...originalProjects, ...originalProjects]
+  // Structured data for projects collection
+  const projectsStructuredData = generateCollectionPageStructuredData(
+    "Featured Projects",
+    "A collection of innovative software projects showcasing expertise in AI/ML, full-stack development, and modern web technologies.",
+    originalProjects
+  )
 
   const CARD_WIDTH = 420 + 24
   const TOTAL_WIDTH = CARD_WIDTH * originalProjects.length
 
-  const controls = useAnimation()
   const x = useMotionValue(0)
-  const springConfig = { damping: 25, stiffness: 120, mass: 0.5 }
-  const xSpring = useSpring(x, springConfig)
 
   useEffect(() => {
     if (!inView || isMobile) return
@@ -207,44 +73,34 @@ export default function Projects() {
     return () => cancelAnimationFrame(frame)
   }, [isPaused, inView, TOTAL_WIDTH, isMobile])
 
-  function getOpacity(cardIndex: number) {
-    if (isMobile) return 1
-    const leftEdge = -xSpring.get() + cardIndex * CARD_WIDTH
-    const fadeWidth = 250
-    if (leftEdge < fadeWidth) {
-      return Math.max(0, leftEdge / fadeWidth)
-    } else if (leftEdge > TOTAL_WIDTH - fadeWidth) {
-      return Math.max(0, (TOTAL_WIDTH - leftEdge) / fadeWidth)
-    }
-    return 1
-  }
-
-  function getScale(cardIndex: number) {
-    if (isMobile) return 1
-    const leftEdge = -xSpring.get() + cardIndex * CARD_WIDTH
-    const center = TOTAL_WIDTH / 2
-    const distanceFromCenter = Math.abs(leftEdge - center)
-    const maxDistance = TOTAL_WIDTH / 2
-    const scale = 1 - (distanceFromCenter / maxDistance) * 0.08
-    return Math.max(0.92, scale)
-  }
 
   return (
-    <section
-      id="projects"
-      className="py-24 md:py-32 bg-gradient-to-b from-white via-gray-50 to-white dark:bg-gradient-to-b dark:from-black dark:via-gray-950 dark:to-black relative overflow-hidden"
-      ref={ref}
-    >
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(0,0,0,0.03),transparent_50%)] dark:bg-[radial-gradient(circle_at_30%_20%,rgba(192,192,192,0.05),transparent_50%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(0,0,0,0.03),transparent_50%)] dark:bg-[radial-gradient(circle_at_70%_80%,rgba(128,128,128,0.05),transparent_50%)]" />
-      <div
-        className="absolute inset-0 opacity-70 dark:opacity-30 pointer-events-none"
-        style={{
-          background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(192, 192, 192, 0.2), transparent 50%)`,
+    <>
+      {/* Structured Data for Projects Collection */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(projectsStructuredData),
         }}
       />
 
+      <section
+        id="projects"
+        className="py-24 md:py-32 bg-gradient-to-b from-white via-gray-50 to-white dark:bg-gradient-to-b dark:from-black dark:via-gray-950 dark:to-black relative overflow-hidden"
+        ref={ref}
+        aria-label="Featured Projects"
+      >
+      {/* Background decoration */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(0,0,0,0.03),transparent_50%)] dark:bg-[radial-gradient(circle_at_30%_20%,rgba(192,192,192,0.05),transparent_50%)]" aria-hidden="true" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(0,0,0,0.03),transparent_50%)] dark:bg-[radial-gradient(circle_at_70%_80%,rgba(128,128,128,0.05),transparent_50%)]" aria-hidden="true" />
+      <div 
+        className="absolute inset-0 opacity-70 dark:opacity-30 pointer-events-none"
+        style={{
+            background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(192, 192, 192, 0.2), transparent 50%)`,
+        }}
+          aria-hidden="true"
+      />
+      
       <div className="container mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -287,13 +143,20 @@ export default function Projects() {
 
                   {/* Image Section */}
                   <div className="relative h-80 overflow-hidden">
-                    <motion.img
-                      src={originalProjects[0].image || "/placeholder.svg"}
-                      alt={originalProjects[0].title}
-                      className="w-full h-full object-cover"
+                    <motion.div
                       whileHover={{ scale: 1.08 }}
                       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                    />
+                      className="w-full h-full"
+                    >
+                      <Image
+                        src={originalProjects[0].image || "/placeholder.svg"}
+                        alt={`${originalProjects[0].title} - ${originalProjects[0].description}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 60vw"
+                        priority
+                      />
+                    </motion.div>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
 
                     {/* Floating Badge */}
@@ -395,14 +258,20 @@ export default function Projects() {
                     <div className="relative h-[285px] overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-800 shadow-lg hover:shadow-2xl transition-all duration-700">
                       {/* Full Image Background */}
                       <div className="absolute inset-0">
-                        <motion.img
-                          src={project.image || "/placeholder.svg"}
-                          alt={project.title}
-                          className="w-full h-full object-cover"
+                        <motion.div
                           initial={{ scale: 1 }}
                           whileHover={{ scale: 1.05 }}
                           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-                        />
+                          className="w-full h-full"
+                        >
+                          <Image
+                            src={project.image || "/placeholder.svg"}
+                            alt={`${project.title} - ${project.description}`}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 40vw"
+                          />
+                        </motion.div>
                         {/* Dark overlay that intensifies on hover */}
                         <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/30 to-black/60 group-hover:from-black/60 group-hover:via-black/50 group-hover:to-black/70 transition-all duration-500" />
                       </div>
@@ -547,16 +416,23 @@ export default function Projects() {
                     <div className="relative bg-white dark:bg-black rounded-2xl overflow-hidden">
                       {/* Image */}
                       <div className="relative h-48 overflow-hidden">
-                        <motion.img
-                          src={project.image || "/placeholder.svg"}
-                          alt={project.title}
-                          className="w-full h-full object-cover"
+                        <motion.div
                           whileHover={{ scale: 1.1, rotate: 2 }}
                           transition={{
                             duration: 0.6,
                             ease: [0.16, 1, 0.3, 1],
                           }}
-                        />
+                          className="w-full h-full"
+                        >
+                          <Image
+                            src={project.image || "/placeholder.svg"}
+                            alt={`${project.title} - ${project.description}`}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                            loading="lazy"
+                          />
+                        </motion.div>
                         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       </div>
 
@@ -572,8 +448,8 @@ export default function Projects() {
                         {/* Technologies */}
                         <div className="flex flex-wrap gap-2 mb-4">
                           {project.technologies.slice(0, 8).map((tech) => (
-                            <Badge
-                              key={tech}
+                            <Badge 
+                              key={tech} 
                               variant="secondary"
                               className="text-xs bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-800 font-crimson"
                             >
@@ -581,7 +457,7 @@ export default function Projects() {
                             </Badge>
                           ))}
                           {project.technologies.length > 8 && (
-                            <Badge
+                            <Badge 
                               variant="secondary"
                               className="text-xs bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-800 font-crimson"
                             >
@@ -593,10 +469,10 @@ export default function Projects() {
                         {/* Buttons */}
                         <div className="flex gap-2">
                           {project.github && (
-                            <Button
-                              asChild
-                              variant="outline"
-                              size="sm"
+                            <Button 
+                              asChild 
+                              variant="outline" 
+                              size="sm" 
                               className="flex-1 border-gray-300 dark:border-gray-700 hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-300 font-crimson"
                             >
                               <Link
@@ -610,9 +486,9 @@ export default function Projects() {
                             </Button>
                           )}
                           {project.live && (
-                            <Button
-                              asChild
-                              size="sm"
+                            <Button 
+                              asChild 
+                              size="sm" 
                               className="bg-gradient-to-r dark:from-gray-700 dark:to-gray-500 hover:from-gray-700 hover:to-gray-500 from-black via-gray-800 to-gray-900 text-white transition-all duration-300 font-crimson shadow-lg hover:shadow-xl"
                             >
                               <Link
@@ -629,8 +505,8 @@ export default function Projects() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
-              ))}
+                  </motion.div>
+                ))}
 
               {/* Last Project - Full Width */}
               {originalProjects[6] && (
@@ -647,16 +523,23 @@ export default function Projects() {
                     <div className="flex flex-col md:flex-row">
                       {/* Image */}
                       <div className="relative md:w-2/5 h-64 md:h-auto overflow-hidden">
-                        <motion.img
-                          src={originalProjects[6].image || "/placeholder.svg"}
-                          alt={originalProjects[6].title}
-                          className="w-full h-full object-cover"
+                        <motion.div
                           whileHover={{ scale: 1.08 }}
                           transition={{
                             duration: 0.8,
                             ease: [0.16, 1, 0.3, 1],
                           }}
-                        />
+                          className="w-full h-full"
+                        >
+                          <Image
+                            src={originalProjects[6].image || "/placeholder.svg"}
+                            alt={`${originalProjects[6].title} - ${originalProjects[6].description}`}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 100vw, 40vw"
+                            loading="lazy"
+                          />
+                        </motion.div>
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/20 dark:to-black/40" />
                       </div>
 
@@ -719,12 +602,13 @@ export default function Projects() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+              </motion.div>
               )}
             </div>
           </div>
         )}
       </div>
     </section>
+    </>
   );
 }

@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { ModeToggle } from "@/components/mode-toggle";
 import {
@@ -103,7 +102,7 @@ export default function Navbar() {
     },
     {
       title: "Blogs",
-      href: "https://medium.com/@tanmay.bansal20",
+      href: "https://blogs.tanmay.space",
       target: "_blank",
       icon: (
         <Pencil className="h-full w-full text-neutral-500 dark:text-neutral-300"></Pencil>
